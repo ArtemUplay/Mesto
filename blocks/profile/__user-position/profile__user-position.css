@@ -1,0 +1,15 @@
+.profile__user-position {
+  margin: 0;
+  padding: 0;
+  /* padding-top: 16px; */
+  grid-area: user-position;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: clamp(14px, 4.3vw, 18px);
+  line-height: 122%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+
+}

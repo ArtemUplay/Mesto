@@ -1,0 +1,4 @@
+.header__logo {
+  width: clamp(104px, 32.5vw, 142px);
+  aspect-ratio: 142 / 33;
+}

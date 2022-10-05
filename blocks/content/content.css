@@ -1,0 +1,15 @@
+.content {
+  /* max-width: calc(282px*3 + 17px*2); */
+  max-width: 880px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 47px;
+}
+
+@media (max-width: 850px) {
+  .content {
+
+    gap: 36px;
+  }
+}

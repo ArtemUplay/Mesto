@@ -1,0 +1,17 @@
+.profile__add-button {
+  grid-area: edit-button;
+  width: 150px;
+  height: 50px;
+  margin-left: auto;
+  background-image: url(../../../images/add_button.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+
+}
+
+@media (max-width: 850px) {
+  .profile__add-button {
+    width: 100%;
+    margin-top: 36px;
+  }
+}

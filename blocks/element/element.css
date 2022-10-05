@@ -1,0 +1,11 @@
+.element {
+  width: 100%;
+  aspect-ratio: 282 / 361;
+  max-width: calc(282px*2 + 16px);
+  background-color: white;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr ;
+  border-radius: 10px;
+  overflow: hidden;
+}

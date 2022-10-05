@@ -1,0 +1,56 @@
+.popup__item {
+  width: 84%;
+  font-family: 'Inter';
+  font-size: 14px;
+  line-height: 17px;
+  border: none;
+  padding-bottom: 13px;
+  border-bottom: 1px solid rgba(0, 0, 0, .2);
+  /* outline: none; */
+
+}
+
+.popup__item:focus {
+  outline: 1px solid red;
+}
+
+
+.popup__item::placeholder {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #000000;
+
+}
+
+.popup__item::-webkit-input-placeholder {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #000000;
+
+}
+
+.popup__item::-moz-placeholder {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #000000;
+
+}
+
+.popup__item::-ms-input-placeholder {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #000000;
+
+}

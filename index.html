@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./pages/index.css">
+    <title>Mesto-project</title>
+</head>
+
+<body class="page">
+  <div class="popup">
+  <!-- <div class="popup popup_opened"> -->
+    <form class="popup__container">
+      <button class="popup__close-button">
+        <!-- <svg fill="contain" xmlns="http://www.w3.org/2000/svg"><path d="M32 28.8 19.2 16 32 3.2 28.8 0 16 12.8 3.2 0 0 3.2 12.8 16 0 28.8 3.2 32 16 19.2 28.8 32l3.2-3.2Z" fill="#fff"/></svg> -->
+      </button>
+      <h2 class="popup__heading">Редактировать профиль</h2>
+      <fieldset class="popup__input-container">
+        <input type="text" class="popup__item poput__item_el_username" name="username" placeholder="Жак-Ив Кусто"
+          required>
+        <input type="text" class="popup__item poput__item_el_position" name="user-position"
+          placeholder="Исследователь океана" required>
+      </fieldset>
+      <fieldset class="popup__handlers">
+        <button type="submit" class="popup__button">Сохранить</button>
+      </fieldset>
+    </form>
+  </div>
+
+
+<header class="header">
+  <img src="./images/header__logo.svg" alt="логотип проекта место" class="header__logo">
+</header>
+
+<main class="content">
+
+<section class="profile">
+  <img src="./images/profile__avatar.jpg" alt="фото пользователя" class="profile__avatar">
+  <div class="profile__info">
+   <h1 class="profile__username">Жак-Ив-Кусто</h1>
+   <p class="profile__user-position">Исследователь океана</p>
+   <div class="button profile__edit-button">
+  </div>
+  </div>
+
+  <div class="button profile__add-button"></div>
+</section>
+
+
+<section class="elements">
+  <div class="element">
+    <img src="./images/element__dombai.jpg" alt="" class="element__photo">
+    <div class="element__plate">
+      <h2 class="element__heading">Карачаевск</h2>
+      <button class="element__like"></button>
+    </div>
+  </div>
+
+  <div class="element">
+    <img src="./images/element__elbrus.jpg" alt="" class="element__photo">
+    <div class="element__plate">
+      <h2 class="element__heading">Гора Эльбрус</h2>
+      <button class="element__like"></button>
+    </div>
+  </div>
+
+  <div class="element">
+    <img src="./images/element__karachaevsk.jpg" alt="" class="element__photo">
+    <div class="element__plate">
+      <h2 class="element__heading">Домбай</h2>
+      <button class="element__like"></button>
+    </div>
+  </div>
+
+  <div class="element">
+    <img src="./images/element__kitela.jpg" alt="" class="element__photo">
+    <div class="element__plate">
+      <h2 class="element__heading">Кительское месторождение граната</h2>
+      <button class="element__like"></button>
+    </div>
+  </div>
+
+  <div class="element">
+    <img src="./images/element__allaki.jpg" alt="" class="element__photo">
+    <div class="element__plate">
+      <h2 class="element__heading">Святилище Аллаки</h2>
+      <button class="element__like"></button>
+    </div>
+  </div>
+
+  <div class="element">
+    <img src="./images/element__mecha.jpg" alt="" class="element__photo">
+    <div class="element__plate">
+      <h2 class="element__heading">Река Красивая Меча</h2>
+      <button class="element__like"></button>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <p class="footer__copyright">&copy; 2020 Mesto Russia</p>
+</footer>
+
+
+</body>
+
+</html>
