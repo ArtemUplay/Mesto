@@ -1,4 +1,7 @@
 .popup__close-button {
+  background-color: unset;
+  border: none;
+  outline: none;
   width: clamp(20px, 6.25vw, 32px);
   height: clamp(20px, 6.25vw, 32px);
   box-sizing: content-box;
@@ -7,8 +10,6 @@
   top: -40px;
   margin: 0;
   padding: 0;
-  background: none;
-  border: none;
   background-image: url(../../../images/close_button.svg);
   background-size: contain;
   opacity: 1;

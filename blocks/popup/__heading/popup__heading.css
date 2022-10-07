@@ -3,10 +3,19 @@
   padding: 0;
   width: 84%;
   color:#000000;
-  font-family: 'Inter';
+  font-family: 'Inter', 'Arial', 'sans-serif';
   font-style: normal;
   font-weight: 900;
-  font-size: clamp(18px, 6.2vw, 24px);
-  /* font-size: 24px; */
+
+  /* font-size: clamp(18px, 6.2vw, 24px); */
+  font-size: 24px;
   line-height: 29px;
+}
+
+@media (max-width: 571px) {
+  .popup__heading {
+    font-size: 18px;
+    margin: 25px auto 75px;
+
+  }
 }

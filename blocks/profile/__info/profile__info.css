@@ -1,12 +1,25 @@
 .profile__info {
+  max-width: 55%;
   display: grid;
   /* justify-items: start; */
-  grid-template-columns: auto auto;
+  grid-template-columns: 1fr auto;
   grid-template-rows: auto;
   grid-template-areas:
   "username edit-button"
   "user-position ."
   ;
+}
 
+@media (max-width: 850px) {
+  .profile__info {
+    max-width: 88%;
+  }
+}
 
+@media (max-width: 571px) {
+  .profile__info {
+    grid-template-areas:
+    "username edit-button"
+    "user-position user-position"
+  }
 }

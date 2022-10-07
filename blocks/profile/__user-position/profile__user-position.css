@@ -3,7 +3,7 @@
   padding: 0;
   /* padding-top: 16px; */
   grid-area: user-position;
-  font-family: 'Inter';
+  font-family: 'Inter', 'Arial', 'sans-serif';
   font-style: normal;
   font-weight: 400;
   font-size: clamp(14px, 4.3vw, 18px);
@@ -12,4 +12,10 @@
   text-overflow: ellipsis;
   overflow: hidden;
 
+}
+
+@media (max-width: 571px) {
+  .profile__user-position {
+    text-align: center;
+  }
 }

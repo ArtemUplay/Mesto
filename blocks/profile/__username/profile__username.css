@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   grid-area: username;
-  font-family: 'Inter';
+  font-family: 'Inter', 'Arial', 'sans-serif';
   font-style: normal;
   font-weight: 500;
   font-size: clamp(27px, 8.4vw, 42px);

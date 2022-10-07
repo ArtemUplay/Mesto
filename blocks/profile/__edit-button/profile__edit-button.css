@@ -3,9 +3,18 @@
   aspect-ratio: 1 / 1;
   align-self: center;
   margin-left: 18px;
+  border: 2px solid white;
+  background-color: black;
+  border-radius: 2px;
   background-image: url(../../../images/edit_button.svg);
   background-repeat: no-repeat;
   background-position: center;
 
 
+}
+
+@media (max-width: 571px) {
+  .profile__edit-button {
+    margin-left: 10px;
+  }
 }
