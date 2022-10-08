@@ -6,10 +6,6 @@
   background-image: url(../../../images/like.svg);
   background-repeat: no-repeat;
   background-size: cover;
-  border: none;
-  background-color: #fff;
-  opacity: 1;
-  transition: .3s;
 }
 
 .element__like:hover {

@@ -7,9 +7,10 @@
 
 @media (max-width: 850px) {
   .header {
-    position: relative;
-    top: 0;
-    left: -6%;
+    /* position: relative;
+    top: 0; */
+    margin-left: -6%;
+    margin-right: -6%;
     width: 100vw;
   }
 }

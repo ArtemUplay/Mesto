@@ -18,8 +18,9 @@
 
 @media (max-width: 571px) {
   .profile__info {
+    position: relative;
     grid-template-areas:
-    "username edit-button"
+    "username username"
     "user-position user-position"
   }
 }
