@@ -16,9 +16,10 @@
   }
 }
 
-@media (max-width: 571px) {
+@media (max-width: 577px) {
   .profile__info {
     position: relative;
+    margin: 0 26px;
     grid-template-areas:
     "username username"
     "user-position user-position"

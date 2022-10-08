@@ -1,9 +1,11 @@
 .header__logo {
   width: clamp(104px, 32.5vw, 142px);
   aspect-ratio: 142 / 33;
+  box-sizing: border-box;
+
 }
 
-@media (max-width: 850px) {
+@media (max-width: 969px) {
   .header__logo {
     margin-left: 6%;
   }

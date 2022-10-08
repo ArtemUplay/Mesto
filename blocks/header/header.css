@@ -1,17 +1,22 @@
 .header {
+  width: 100%;
+  max-width: 880px;
+  margin: 0 6%;
   border-bottom: 1px solid rgba(54, 54, 54, .7);
   min-height: clamp(84px, 26.2vw, 119px);
   display: flex;
   align-items: center;
 }
 
-@media (max-width: 850px) {
+@media (max-width: 969px) {
   .header {
+    margin: 0;
+    max-width: 100%;
     /* position: relative;
     top: 0; */
-    margin-left: -6%;
+    /* margin-left: -6%;
     margin-right: -6%;
-    width: 100vw;
+    width: 100vw; */
   }
 }
 
