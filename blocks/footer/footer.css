@@ -1,4 +1,11 @@
 .footer {
-  align-self: flex-start;
-  margin-left: 6%;
+  width: 100%;
+
+
+}
+
+@media (min-width: 1000px) {
+  .footer {
+    max-width: 880px;
+  }
 }
