@@ -13,6 +13,3 @@
   cursor: pointer;
 }
 
-.element__like:active {
-  background-image: url(../../../images/like-black.svg);
-}
