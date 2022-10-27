@@ -30,25 +30,34 @@ const profileUserPosition = document.querySelector('.profile__user-position');
 // let popupUserPosition = popup.querySelector('.popup__item_el_position');
 
 
+function openPopup(popup) {
+  popup.classList.add('popup_opened');
+}
+
+function closePopup(popup) {
+  popup.classList.remove('popup_opened');
+}
+
+
 function openProfilePopup () {
-  return function (){
+  {
     popupUserName.value = profileUserName.textContent;
     popupUserPosition.value = profileUserPosition.textContent;
-    popupProfile.classList.add('popup_opened');
+    openPopup(popupProfile);
   }
 }
 
 function closeProfilePopup () {
-  return function() {
-    popupProfile.classList.remove('popup_opened');
+  {
+    closePopup(popupProfile);
   }
 }
 
 function saveProfileFromPopup () {
-  return function() {
+ {
     profileUserName.textContent = popupUserName.value;
     profileUserPosition.textContent = popupUserPosition.value;
-    popupProfile.classList.remove('popup_opened');
+    closePopup(popupProfile);
   }
 }
 
@@ -78,18 +87,18 @@ function insertCard2Page (card) {
 }
 
 function saveCardfromPopup () {
-  return function() {
+   {
     const newCard = createCardElement(popupCardName.value, popupCardSrc.value);
     insertCard2Page(newCard);
-    popupCardAdd.classList.remove('popup_opened');
+    closePopup(popupCardAdd);
   }
 }
 
 function openCardAddPopup () {
-  return function () {
+  {
   popupCardName.value = '';
   popupCardSrc.value = '';
-  popupCardAdd.classList.add('popup_opened');
+  openPopup(popupCardAdd);
   }
 }
 
@@ -99,22 +108,22 @@ return function (){
   popupPhoto.setAttribute('src', src);
   popupPhoto.setAttribute('alt', alt);
   popupHeading.textContent = alt;
-  popupCardView.classList.add('popup_opened');
+  openPopup(popupCardView);
 }
 }
 
-const closePopup = (popup) => () => {
-  popup.classList.remove('popup_opened');
-}
+// const closePopup = (popup) => () => {
+//   popup.classList.remove('popup_opened');
+// }
 
-buttonEdit.addEventListener('click', openProfilePopup());
-profileCloseButton.addEventListener('click', closeProfilePopup());
-profileSaveButton.addEventListener('click', saveProfileFromPopup());
+buttonEdit.addEventListener('click', openProfilePopup);
+profileCloseButton.addEventListener('click', closeProfilePopup);
+profileSaveButton.addEventListener('click', saveProfileFromPopup);
 
-buttonAddPlace.addEventListener('click', openCardAddPopup());
-buttonClosePlace.addEventListener('click', closePopup(popupCardAdd));
-buttonSavePlace.addEventListener('click', saveCardfromPopup());
-buttonCloseView.addEventListener('click', closePopup(popupCardView));
+buttonAddPlace.addEventListener('click', openCardAddPopup);
+buttonClosePlace.addEventListener('click', () => closePopup(popupCardAdd));
+buttonSavePlace.addEventListener('click', saveCardfromPopup);
+buttonCloseView.addEventListener('click', () => closePopup(popupCardView));
 
 const initialCards = [
   {
