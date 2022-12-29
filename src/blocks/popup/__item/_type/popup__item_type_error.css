@@ -1,0 +1,9 @@
+.popup__item_type_error {
+  margin-bottom: 5px;
+  border-bottom: 1px solid #ff0000;
+}
+
+.popup__item_type_error:focus {
+  border-bottom: 1px solid #ff0000;
+  /* opacity: .4; */
+}

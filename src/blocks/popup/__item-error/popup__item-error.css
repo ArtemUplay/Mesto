@@ -1,0 +1,12 @@
+.popup__item-error {
+  font-family: 'Inter', 'Arial', 'sans-serif';
+  color: #ff0000;
+  width: 84%;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 15px;
+  letter-spacing: 0em;
+  text-align: left;
+  margin-bottom: 13px;
+  display: none;
+}

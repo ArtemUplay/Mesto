@@ -20,6 +20,14 @@
   cursor: pointer;
 }
 
+.popup__button:disabled {
+  background-color: white;
+  opacity: .2;
+  color: black;
+  border: 1px solid #000000;
+  border-radius: 2px;
+}
+
 @media (max-width: 571px) {
   .popup__button {
     margin-top: 15px;
