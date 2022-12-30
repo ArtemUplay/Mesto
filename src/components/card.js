@@ -1,33 +1,15 @@
 const cardTemplate = document.querySelector('#element-template').content;
 const cardsSection = document.querySelector('.elements');
-import { openCardViewPopup } from './modal.js';
+import { openCardViewPopup } from './index.js';
 
-export const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-  ];
+function deleteCard(delBtn) {
+  const cardElement = delBtn.closest('.element');
+  cardElement.remove();
+}
+
+function toggleLike(likeBtn) {
+  likeBtn.classList.toggle('element__like_active');
+}
 
 export function createCardElement (placeName, placePhotoSrc) {
   const cardNew = cardTemplate.querySelector('.element').cloneNode(true);
@@ -36,14 +18,8 @@ export function createCardElement (placeName, placePhotoSrc) {
   photoCardNew.src = placePhotoSrc;
   photoCardNew.alt = 'Фото. ' + placeName;
   cardNew.querySelector('.element__heading').textContent = placeName;
-  cardNew.querySelector('.element__delete-button').addEventListener('click', function() {
-    const cardElement = cardNew.querySelector('.element__delete-button').closest('.element');
-    cardElement.remove();
-  })
-  cardNew.querySelector('.element__like').addEventListener('click', function (evt){
-    evt.target.classList.toggle('element__like_active');
-  })
-
+  cardNew.querySelector('.element__delete-button').addEventListener('click', (evt) => deleteCard(evt.target));
+  cardNew.querySelector('.element__like').addEventListener('click', (evt) => toggleLike(evt.target));
   photoCardNew.addEventListener('click', openCardViewPopup(placePhotoSrc, placeName));
 
   return cardNew;
