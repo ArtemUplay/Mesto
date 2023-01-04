@@ -1,6 +1,6 @@
 const cardTemplate = document.querySelector('#element-template').content;
 const cardsSection = document.querySelector('.elements');
-import { openCardViewPopup } from './index.js';
+import { openCardViewPopup } from './utils.js';
 
 function deleteCard(delBtn) {
   const cardElement = delBtn.closest('.element');

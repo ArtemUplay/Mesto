@@ -1,5 +1,5 @@
 import { createCardElement, insertCard2Page } from './card.js';
-import { popupCardAdd, popupCardView, popupProfile, openPopup, closePopup } from './modal.js';
+import { openPopup, closePopup } from './modal.js';
 import { enableValidation, cleanValidationErrors, validationConfig } from './validate.js';
 
 
@@ -8,6 +8,10 @@ import '../pages/index.css';
 const buttonEdit = document.querySelector('.profile__edit-button');
 const buttonAddPlace = document.querySelector('.profile__add-button');
 
+const popupCardAdd = document.querySelector('.popup_type_card');
+const popupProfile = document.querySelector('.popup_type_profile');
+
+
 const popupUserName = popupProfile.querySelector('.popup__item_el_name');
 const popupUserPosition = popupProfile.querySelector('.popup__item_el_position');
 const profileUserName = document.querySelector('.profile__username');
@@ -15,9 +19,6 @@ const profileUserPosition = document.querySelector('.profile__user-position');
 
 const popupCardName = popupCardAdd.querySelector('.popup__item_el_name');
 const popupCardSrc = popupCardAdd.querySelector('.popup__item_el_position');
-
-const popupPhoto = popupCardView.querySelector('.popup__photo');
-const popupHeading = popupCardView.querySelector('.popup__heading');
 
 const buttonSavePlace = popupCardAdd.querySelector('.popup__button');
 const profileSaveButton = popupProfile.querySelector('.popup__button');
@@ -55,13 +56,11 @@ const initialCards = [
 ];
 
 function openProfilePopup() {
-  {
-    popupUserName.value = profileUserName.textContent;
+      popupUserName.value = profileUserName.textContent;
     popupUserPosition.value = profileUserPosition.textContent;
     cleanValidationErrors(popupProfile, validationConfig);
     openPopup(popupProfile);
   }
-}
 
 function saveProfileFromPopup() {
   if (!profileSaveButton.disabled) {
@@ -72,14 +71,12 @@ function saveProfileFromPopup() {
 }
 
 function openCardAddPopup() {
-  {
     popupCardName.value = '';
     popupCardSrc.value = '';
     cleanValidationErrors(popupCardAdd, validationConfig);
     buttonSavePlace.disabled = true;
     openPopup(popupCardAdd);
   }
-}
 
 function saveCardfromPopup() {
   if (!buttonSavePlace.disabled) {
@@ -89,15 +86,7 @@ function saveCardfromPopup() {
   }
 }
 
-export function openCardViewPopup(src, alt) {
-  return function () {
 
-    popupPhoto.setAttribute('src', src);
-    popupPhoto.setAttribute('alt', alt);
-    popupHeading.textContent = alt;
-    openPopup(popupCardView);
-  }
-}
 
 // popupCardAdd.addEventListener('keydown', function(evt) {
 //   if (evt.key === 'Enter') {
