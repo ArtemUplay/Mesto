@@ -1,21 +1,3 @@
-// Создан файл api.js , внутри которого описаны запросы к серверу. Запросы к серверу не должны быть внутри
-// модулей или index.js .
-// Каждый метод, который включает обращение к серверу, содержит return fetch , то есть возвращает объект
-// Promise .
-// Все операции над DOM включены внутрь цепочки промисов.
-// Ответ от сервера всегда проверяется на корректность:
-
-// .then(res => {
-//   if (res.ok) {
-//   return res.json();
-//   }
-//   // если ошибка, отклоняем промис
-//   return Promise.reject(`Ошибка: ${res.status}`);
-//   });
-
-//   Цепочка промисов продолжается вне функций api.js благодаря возврату из функций промиса: return fetch
-
-
   const config = {
     baseUrl: 'https://nomoreparties.co/v1/plus-cohort-18/',
     headers: {
@@ -24,17 +6,25 @@
     }
   }
 
+  function checkResponse(res) {
+    if (res.ok) {
+      return res.json();
+  }
+  return Promise.reject(res.status);
+  }
+
   export const getUserProfile = () => {
     return fetch(`${config.baseUrl}users/me`, {
       method: 'GET',
       headers: config.headers
       })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-         return Promise.reject(res.status);
-      })
+      .then(checkResponse)
+      // .then((res) => {
+      //   if (res.ok) {
+      //     return res.json();
+      //   }
+      //    return Promise.reject(res.status);
+      // })
   }
 
   export const getCards = () => {
@@ -42,12 +32,13 @@
       method: 'GET',
       headers: config.headers
       })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-         return Promise.reject(res.status);
-      })
+      .then(checkResponse)
+      // .then((res) => {
+      //   if (res.ok) {
+      //     return res.json();
+      //   }
+      //    return Promise.reject(res.status);
+      // })
   }
 
   export const postCard = (cardName, cardUrl) => {
@@ -59,6 +50,7 @@
       }),
       headers: config.headers
       })
+      .then(checkResponse)
       // .then((res) => {
       //   if (res.ok) {
       //     return res.json();
@@ -72,12 +64,13 @@
       method: 'DELETE',
       headers: config.headers
       })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-         return Promise.reject(res.status);
-      })
+      .then(checkResponse)
+      // .then((res) => {
+      //   if (res.ok) {
+      //     return res.json();
+      //   }
+      //    return Promise.reject(res.status);
+      // })
   }
 
   export const likeCard = (cardId) => {
@@ -85,12 +78,13 @@
       method: 'PUT',
       headers: config.headers
       })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-         return Promise.reject(res.status);
-      })
+      .then(checkResponse)
+      // .then((res) => {
+      //   if (res.ok) {
+      //     return res.json();
+      //   }
+      //    return Promise.reject(res.status);
+      // })
   }
 
   export const dislikeCard = (cardId) => {
@@ -98,12 +92,13 @@
       method: 'DELETE',
       headers: config.headers
       })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-         return Promise.reject(res.status);
-      })
+      .then(checkResponse)
+      // .then((res) => {
+      //   if (res.ok) {
+      //     return res.json();
+      //   }
+      //    return Promise.reject(res.status);
+      // })
   }
 
   export const patchProfile = (userName, userPosition) => {
@@ -116,12 +111,13 @@
       }),
       headers: config.headers
       })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-         return Promise.reject(res.status);
-      })
+      .then(checkResponse)
+      // .then((res) => {
+      //   if (res.ok) {
+      //     return res.json();
+      //   }
+      //    return Promise.reject(res.status);
+      // })
   }
 
   export const patchAvatar = (avatarUrl) => {
@@ -133,10 +129,11 @@
       }),
       headers: config.headers
       })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-         return Promise.reject(res.status);
-      })
+      .then(checkResponse)
+      // .then((res) => {
+      //   if (res.ok) {
+      //     return res.json();
+      //   }
+      //    return Promise.reject(res.status);
+      // })
   }

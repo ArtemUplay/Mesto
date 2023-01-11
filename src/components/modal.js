@@ -23,7 +23,7 @@ function closeByEsc(evt) {
 function closeBybackgroungClick(evt) {
 
     if (evt.target.classList.contains('popup_opened')) {
-      closePopup(findOpenedPopup());
+      closePopup(evt.target);
     }
 
 }

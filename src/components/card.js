@@ -1,11 +1,12 @@
 const cardTemplate = document.querySelector('#element-template').content;
 const cardsSection = document.querySelector('.elements');
-import { openCardViewPopup } from './utils.js';
+import { openCardViewPopup, checkResponse } from './utils.js';
 import { delCard, likeCard, dislikeCard } from './api.js';
 
 function deleteCard(delBtn) {
   const cardElement = delBtn.closest('.element');
   delCard(cardElement.dataset.cardId)
+  // .then(checkResponse)
     .then(() => {
        cardElement.remove();
       })
@@ -18,16 +19,20 @@ function toggleLike(likeBtn) {
 
   if(likeBtn.classList.contains('element__like_active')) {
     dislikeCard(cardElement.dataset.cardId)
+    // .then(checkResponse)
       .then((data) => {
         likesCounter.textContent = data.likes.length
         likeBtn.classList.remove('element__like_active');
       })
+      .catch((err) => console.log(`Ошибка: ${err}`))
   } else {
     likeCard(cardElement.dataset.cardId)
+    // .then(checkResponse)
       .then((data) => {
         likesCounter.textContent = data.likes.length;
         likeBtn.classList.add('element__like_active');
        })
+       .catch((err) => console.log(`Ошибка: ${err}`))
   }
 }
 

@@ -19,14 +19,15 @@ export function openCardViewPopup(src, alt) {
   }
 }
 
-export function renderLoading(popup, isLoading) {
+export function renderLoading(popup, btnText) {
   const btnSave =  popup.querySelector('.popup__button');
-  const normBtnTxt = btnSave.textContent;
-  if (isLoading) {
-    btnSave.textContent = "Сохранение...";
-  } else {
-    btnSave.textContent = normBtnTxt;
-  }
+  btnSave.textContent = btnText;
+  // const normBtnTxt = btnSave.textContent;
+  // if (isLoading) {
+  //   btnSave.textContent = "Сохранение...";
+  // } else {
+  //   btnSave.textContent = normBtnTxt;
+  // }
 }
 
 export function fillProfile(profileObj) {
@@ -35,3 +36,5 @@ export function fillProfile(profileObj) {
   profileAvatar.src = profileObj.avatar;
   profileAvatar.alt = `фотография ${profileObj.name}`;
 }
+
+

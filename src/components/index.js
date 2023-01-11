@@ -2,7 +2,7 @@ import { createCardElement, insertCard2Page } from './card.js';
 import { openPopup, closePopup } from './modal.js';
 import { enableValidation, cleanValidationErrors, validationConfig } from './validate.js';
 import { getUserProfile, getCards, postCard, patchProfile, patchAvatar } from './api.js';
-import { renderLoading, fillProfile, profileAvatar} from './utils.js';
+import { renderLoading, fillProfile, profileAvatar } from './utils.js';
 
 import '../pages/index.css';
 
@@ -62,6 +62,11 @@ let userId = 1;
 //   }
 // ];
 
+// initialCards.forEach(element => {
+//   const newCard = createCardElement(element.name, element.link);
+//   insertCard2Page(newCard);
+// });
+
 function openProfilePopup() {
       popupUserName.value = profileUserName.textContent;
     popupUserPosition.value = profileUserPosition.textContent;
@@ -110,19 +115,47 @@ buttonAddPlace.addEventListener('click', openCardAddPopup);
 cardCreateForm.addEventListener('submit', saveCardfromPopup);
 
 buttonAvatarEdit.addEventListener('click', () => {
+  popupAvatarUrl.textContent = "";
+  cleanValidationErrors(popupAvatar, validationConfig);
+  buttonSaveAvatar.disabled = true;
   openPopup(popupAvatar);
 })
+
 userAvatarForm.addEventListener('submit', updateAvatar);
 
 enableValidation(validationConfig);
 
-// initialCards.forEach(element => {
-//   const newCard = createCardElement(element.name, element.link);
-//   insertCard2Page(newCard);
-// });
+
+
+Promise.all([getUserProfile(), getCards()])
+// тут деструктурируете ответ от сервера, чтобы было понятнее, что пришло
+  // .then((results) => {
+  //   const userData = results[0];
+  //   const cards = results[1];
+  // })
+  .then((results) => {
+    const userData = results[0];
+    const cards = results[1];
+      // тут установка данных пользователя
+      fillProfile(userData);
+      userId = userData._id;
+      // и тут отрисовка карточек
+      cards.reverse().forEach(element => {
+      const newCard = createCardElement(element.name, element.link, element.likes.length, element._id, element.owner._id, userId);
+      insertCard2Page(newCard);
+      if (element.likes.findIndex(e => e._id === userId) !== -1) {
+        const cardLike = newCard.querySelector('.element__like');
+        cardLike.classList.add('element__like_active');
+      }
+    });
+  })
+  .catch(err => {
+    // тут ловим ошибку
+    console.log(err);
+  });
 
 //загрузка профиля
-getUserProfile()
+// getUserProfile()
 // fetch('https://nomoreparties.co/v1/plus-cohort-18/users/me', {
 //   headers: {
 //     authorization: 'd95e8e0f-5717-4536-87da-f10af028f83a'
@@ -131,50 +164,53 @@ getUserProfile()
 //   .then((res) => {
 //     return res.json();
 //   })
-  .then((data) => {
-    fillProfile(data);
-    userId = data._id;
-    console.log(userId);
+  // .then(checkResponse)
+  // .then((data) => {
+  //   fillProfile(data);
+  //   userId = data._id;
+  //   console.log(userId);
 
-  })
-  .catch((err) => console.log(`Ошибка: ${err}`))
+  // })
+  // .catch((err) => console.log(`Ошибка: ${err}`))
 
 //загрузка карточек
-getCards()
-  .then((data) => {
-     data.forEach(element => {
-      const newCard = createCardElement(element.name, element.link, element.likes.length, element._id, element.owner._id, userId);
-      insertCard2Page(newCard);
-      if (element.likes.findIndex(e => e._id === userId) !== -1) {
+// getCards()
+// .then(checkResponse)
+//   .then((data) => {
+//      data.forEach(element => {
+//       const newCard = createCardElement(element.name, element.link, element.likes.length, element._id, element.owner._id, userId);
+//       insertCard2Page(newCard);
+//       if (element.likes.findIndex(e => e._id === userId) !== -1) {
         // console.log(newCard);
-        const cardLike = newCard.querySelector('.element__like');
+        // const cardLike = newCard.querySelector('.element__like');
         // console.log(cardLike);
-        cardLike.classList.add('element__like_active');
-      }
-    });
-  })
-  .catch((err) => console.log(`Ошибка: ${err}`))
+        // cardLike.classList.add('element__like_active');
+  //     }
+  //   });
+  // })
+  // .catch((err) => console.log(`Ошибка: ${err}`))
 
   //запостить карточку
   function saveCardfromPopup() {
     if (!buttonSavePlace.disabled) {
 
-      renderLoading(popupCardAdd, true);
+      renderLoading(popupCardAdd, "Сохранение...");
       postCard(popupCardName.value, popupCardSrc.value)
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-         return Promise.reject(res.status);
-      })
+      // .then(checkResponse)
+      // .then((res) => {
+      //   if (res.ok) {
+      //     return res.json();
+      //   }
+      //    return Promise.reject(res.status);
+      // })
         .then((element) => {
           const newCard = createCardElement(element.name, element.link, element.likes.length, element._id, element.owner._id, userId);
           insertCard2Page(newCard);
+          closePopup(popupCardAdd);
           })
         .catch((err) => console.log(`Ошибка: ${err}`))
         .finally(() => {
-          renderLoading(popupCardAdd, false);
-          closePopup(popupCardAdd);
+          renderLoading(popupCardAdd, "Создать");
         });
     }
   }
@@ -182,17 +218,17 @@ getCards()
     //отредактировать профиль
     function saveProfileFromPopup() {
       if (!profileSaveButton.disabled) {
-        renderLoading(popupProfile, true);
+        renderLoading(popupProfile, "Сохранение...");
         patchProfile(popupUserName.value, popupUserPosition.value)
+        // .then(checkResponse)
           .then((element) => {
             profileUserName.textContent = element.name;
             profileUserPosition.textContent = element.about;
+            closePopup(popupProfile);
             })
             .catch((err) => console.log(`Ошибка: ${err}`))
             .finally(() => {
-              renderLoading(popupProfile, false);
-              closePopup(popupProfile);
-
+              renderLoading(popupProfile, "Сохранить");
             });
         }
       }
@@ -201,17 +237,18 @@ getCards()
 
       function updateAvatar() {
         if (!buttonSaveAvatar.disabled) {
-          renderLoading(popupAvatar, true);
+          renderLoading(popupAvatar, "Сохранение...");
           patchAvatar(popupAvatarUrl.value)
+
+          // .then(checkResponse)
           .then((res) => {
             profileAvatar.src = popupAvatarUrl.value;
             popupAvatarUrl.value = "";
+            closePopup(popupAvatar);
           })
           .catch((err) => console.log(`Ошибка: ${err}`))
           .finally(() => {
-            renderLoading(popupAvatar, false);
-            closePopup(popupAvatar);
-
+            renderLoading(popupAvatar, "Сохранить");
           });
           }
         }
