@@ -129,6 +129,34 @@ enableValidation(validationConfig);
 
 
 
+// Promise.all([getUserProfile(), getCards()])
+//   // тут деструктурируете ответ от сервера, чтобы было понятнее, что пришло
+//   // .then((results) => {
+//   //   const userData = results[0];
+//   //   const cards = results[1];
+//   // })
+//   .then((results) => {
+//     const userData = results[0];
+//     const cards = results[1];
+//     // тут установка данных пользователя
+//     fillProfile(userData);
+//     userId = userData._id;
+//     // и тут отрисовка карточек
+//     cards.reverse().forEach(element => {
+//       const newCard = createCardElement(element.name, element.link, element.likes.length, element._id, element.owner._id, userId);
+//       insertCard2Page(newCard);
+//       if (element.likes.findIndex(e => e._id === userId) !== -1) {
+//         const cardLike = newCard.querySelector('.element__like');
+//         cardLike.classList.add('element__like_active');
+//       }
+//     });
+//   })
+//   .catch(err => {
+//     // тут ловим ошибку
+//     console.log(err);
+//   });
+
+
 Promise.all([getUserProfile(), getCards()])
   // тут деструктурируете ответ от сервера, чтобы было понятнее, что пришло
   // .then((results) => {
@@ -142,10 +170,12 @@ Promise.all([getUserProfile(), getCards()])
     fillProfile(userData);
     userId = userData._id;
     // и тут отрисовка карточек
-    cards.reverse().forEach(element => {
-      const newCard = createCardElement(element.name, element.link, element.likes.length, element._id, element.owner._id, userId);
-      insertCard2Page(newCard);
-      if (element.likes.findIndex(e => e._id === userId) !== -1) {
+    cards.reverse().forEach(cardElement => {
+      console.log(cardElement);
+      // const newCard = createCardElement(element.name, element.link, element.likes.length, element._id, element.owner._id, userId);
+      const newCard = new Card(cardElement, '#element-template');
+      insertCard2Page(newCard.generate());
+      if (cardElement.likes.findIndex(e => e._id === userId) !== -1) {
         const cardLike = newCard.querySelector('.element__like');
         cardLike.classList.add('element__like_active');
       }
@@ -198,10 +228,6 @@ const data = {
   placePhotoSrc: 'https://habrastorage.org/files/3a3/4b9/774/3a34b977425e41e5855833cb3d5c1fed.png',
   likesNumbers: 100,
 }
-
-const cardClass = new Card({ data }, '#element-template');
-
-insertCard2Page(cardClass.generate());
 
 //запостить карточку
 function saveCardfromPopup() {

@@ -1,11 +1,11 @@
-
+import { dislikeCard, likeCard } from "./api";
 
 export default class Card {
-  constructor({ data }, cardSelector) {
-    this._cardId = data.cardId;
-    this._placeName = data.placeName;
-    this._image = data.placePhotoSrc;
-    this._likesNumber = data.likesNumbers;
+  constructor(data, cardSelector) {
+    this._placeName = data.name;
+    this._image = data.link;
+    this._likesNumber = data.likes.length;
+    this._cardId = data._id;
     this._selector = cardSelector;
   }
 
@@ -34,19 +34,32 @@ export default class Card {
   }
 
   _setEventListeners() {
-    this._element.querySelector('.element__like').addEventListener('click', () => {
-      this.toggleLike();
+    this.buttonLike = this._element.querySelector('.element__like');
+
+    this.buttonLike.addEventListener('click', () => {
+      this._toggleLike();
     })
   }
 
-  toggleLike() {
-    this.likesCounter = this._element.querySelector('.element__likes-counter');
-    this.buttonLike = this._element.querySelector('.element__like');
-
+  _toggleLike() {
     if (this.buttonLike.classList.contains('element__like_active')) {
-      this.buttonLike.classList.remove('element__like_active');
+      dislikeCard(this._cardId)
+        .then(data => {
+          this._element.querySelector('.element__likes-counter').textContent = this._likesNumber;
+          this.buttonLike.classList.remove('element__like_active');
+        })
+        .catch(err => {
+          console.log(`Ошибка: ${err}`);
+        })
     } else {
-      this.buttonLike.classList.add('element__like_active');
+      likeCard(this._cardId)
+        .then(data => {
+          this._element.querySelector('.element__likes-counter').textContent = this._likesNumber;
+          this.buttonLike.classList.add('element__like_active');
+        })
+        .catch(err => {
+          console.log(`Ошибка: ${err}`);
+        })
     }
   }
 }
