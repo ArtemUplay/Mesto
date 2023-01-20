@@ -203,8 +203,6 @@ const cardClass = new Card({ data }, '#element-template');
 
 insertCard2Page(cardClass.generate());
 
-console.log(cardClass._setEventListeners());
-
 //запостить карточку
 function saveCardfromPopup() {
   if (!buttonSavePlace.disabled) {

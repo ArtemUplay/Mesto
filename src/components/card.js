@@ -34,35 +34,18 @@ export default class Card {
   }
 
   _setEventListeners() {
-    console.log(this._element);
-    this.buttonLike = this._element.querySelector('.element__like');
-
-    this.buttonLike.addEventListener('click', () => {
+    this._element.querySelector('.element__like').addEventListener('click', () => {
       this.toggleLike();
     })
   }
 
   toggleLike() {
-    this.likesCounter = this_element.querySelector('.element__likes-counter');
+    this.likesCounter = this._element.querySelector('.element__likes-counter');
     this.buttonLike = this._element.querySelector('.element__like');
 
     if (this.buttonLike.classList.contains('element__like_active')) {
-      // dislikeCard(cardElement.dataset.cardId)
-      //   // .then(checkResponse)
-      //   .then((data) => {
-      //     likesCounter.textContent = data.likes.length
-      //     likeBtn.classList.remove('element__like_active');
-      //   })
-      //   .catch((err) => console.log(`Ошибка: ${err}`))
       this.buttonLike.classList.remove('element__like_active');
     } else {
-      // likeCard(cardElement.dataset.cardId)
-      //   // .then(checkResponse)
-      //   .then((data) => {
-      //     likesCounter.textContent = data.likes.length;
-      //     likeBtn.classList.add('element__like_active');
-      //   })
-      //   .catch((err) => console.log(`Ошибка: ${err}`))
       this.buttonLike.classList.add('element__like_active');
     }
   }
