@@ -1,10 +1,12 @@
-import { createCardElement, insertCard2Page } from './card.js';
+import { createCardElement, insertCard2Page } from './card_module.js';
 import { openPopup, closePopup } from './modal.js';
 import { enableValidation, cleanValidationErrors, validationConfig } from './validate.js';
 import { getUserProfile, getCards, postCard, patchProfile, patchAvatar } from './api.js';
 import { renderLoading, fillProfile, profileAvatar } from './utils.js';
 
 import '../pages/index.css';
+
+import Card from './Card.js';
 
 const buttonEdit = document.querySelector('.profile__edit-button');
 const buttonAddPlace = document.querySelector('.profile__add-button');
@@ -189,6 +191,19 @@ Promise.all([getUserProfile(), getCards()])
   //   });
   // })
   // .catch((err) => console.log(`Ошибка: ${err}`))
+
+  const data = {
+    cardId: 1,
+    placeName: 'Тест класс',
+    placePhotoSrc: 'https://habrastorage.org/files/3a3/4b9/774/3a34b977425e41e5855833cb3d5c1fed.png',
+    likesNumbers: 100,
+  }
+
+  const cardClass = new Card (data, '.element-template');
+
+  insertCard2Page(cardClass.generate());
+
+
 
   //запостить карточку
   function saveCardfromPopup() {

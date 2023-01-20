@@ -1,68 +1,32 @@
-const cardTemplate = document.querySelector('#element-template').content;
-const cardsSection = document.querySelector('.elements');
-import { openCardViewPopup, checkResponse } from './utils.js';
-import { delCard, likeCard, dislikeCard } from './api.js';
-
-function deleteCard(delBtn) {
-  const cardElement = delBtn.closest('.element');
-  delCard(cardElement.dataset.cardId)
-  // .then(checkResponse)
-    .then(() => {
-       cardElement.remove();
-      })
-    .catch((err) => console.log(`Ошибка: ${err}`))
-}
-
-function toggleLike(likeBtn) {
-  const cardElement = likeBtn.closest('.element');
-  const likesCounter = cardElement.querySelector('.element__likes-counter');
-
-  if(likeBtn.classList.contains('element__like_active')) {
-    dislikeCard(cardElement.dataset.cardId)
-    // .then(checkResponse)
-      .then((data) => {
-        likesCounter.textContent = data.likes.length
-        likeBtn.classList.remove('element__like_active');
-      })
-      .catch((err) => console.log(`Ошибка: ${err}`))
-  } else {
-    likeCard(cardElement.dataset.cardId)
-    // .then(checkResponse)
-      .then((data) => {
-        likesCounter.textContent = data.likes.length;
-        likeBtn.classList.add('element__like_active');
-       })
-       .catch((err) => console.log(`Ошибка: ${err}`))
-  }
-}
-
-export function createCardElement (placeName, placePhotoSrc, likesNumbers, cardId, cardOwnerId, myId) {
-  const cardNew = cardTemplate.querySelector('.element').cloneNode(true);
-  const photoCardNew = cardNew.querySelector('.element__photo');
-  const likesCounter = cardNew.querySelector('.element__likes-counter');
-  const deleteBtn = cardNew.querySelector('.element__delete-button');
-
-  cardNew.dataset.cardId = cardId;
-  photoCardNew.src = placePhotoSrc;
-  photoCardNew.alt = 'Фото. ' + placeName;
-  likesCounter.textContent = likesNumbers;
-
-  cardNew.querySelector('.element__heading').textContent = placeName;
-  cardNew.querySelector('.element__like').addEventListener('click', (evt) => toggleLike(evt.target));
-  photoCardNew.addEventListener('click', openCardViewPopup(placePhotoSrc, placeName));
-
-  if (cardOwnerId === myId) {
-    deleteBtn.style.display = 'block';
-    deleteBtn.addEventListener('click', (evt) => deleteCard(evt.target));
+export default class Card {
+  constructor({ data }, cardSelector) {
+    this._cardId = data.cardId;
+    this._placeName = data.placeName;
+    this._image = data.placePhotoSrc;
+    this._likesNumber = data.likesNumbers;
+    this._selector = cardSelector;
   }
 
-  return cardNew;
-}
+    _getElement() {
+      const cardElement = document
+      .querySelector(this._selector)
+      .content
+      .querySelector('.element')
+      .cloneNode(true);
 
-export function insertCard2Page (card) {
-  cardsSection.prepend(card);
-}
+    return cardElement;
+    }
 
+    generate() {
+      this._element = this._getElement();
+      this._element.dataset.cardId = this._cardId;
+      this._element.querySelector('.element__photo').src = this._image;
+      this._element.querySelector('.element__photo').alt = `Фото. + ${this._placeName}`;
+      this._element.querySelector('.element__heading').textContent = this._placeName;
+      this._element.querySelector('.element__likes-counter').textContent = this._likesNumber;
 
+      return this._element;
 
+      }
 
+  }
