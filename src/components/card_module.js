@@ -13,28 +13,28 @@ function deleteCard(delBtn) {
     .catch((err) => console.log(`Ошибка: ${err}`))
 }
 
-function toggleLike(likeBtn) {
-  const cardElement = likeBtn.closest('.element');
-  const likesCounter = cardElement.querySelector('.element__likes-counter');
+// function toggleLike(likeBtn) {
+//   const cardElement = likeBtn.closest('.element');
+//   const likesCounter = cardElement.querySelector('.element__likes-counter');
 
-  if(likeBtn.classList.contains('element__like_active')) {
-    dislikeCard(cardElement.dataset.cardId)
-    // .then(checkResponse)
-      .then((data) => {
-        likesCounter.textContent = data.likes.length
-        likeBtn.classList.remove('element__like_active');
-      })
-      .catch((err) => console.log(`Ошибка: ${err}`))
-  } else {
-    likeCard(cardElement.dataset.cardId)
-    // .then(checkResponse)
-      .then((data) => {
-        likesCounter.textContent = data.likes.length;
-        likeBtn.classList.add('element__like_active');
-       })
-       .catch((err) => console.log(`Ошибка: ${err}`))
-  }
-}
+//   if(likeBtn.classList.contains('element__like_active')) {
+//     dislikeCard(cardElement.dataset.cardId)
+//     // .then(checkResponse)
+//       .then((data) => {
+//         likesCounter.textContent = data.likes.length
+//         likeBtn.classList.remove('element__like_active');
+//       })
+//       .catch((err) => console.log(`Ошибка: ${err}`))
+//   } else {
+//     likeCard(cardElement.dataset.cardId)
+//     // .then(checkResponse)
+//       .then((data) => {
+//         likesCounter.textContent = data.likes.length;
+//         likeBtn.classList.add('element__like_active');
+//        })
+//        .catch((err) => console.log(`Ошибка: ${err}`))
+//   }
+// }
 
 export function createCardElement (placeName, placePhotoSrc, likesNumbers, cardId, cardOwnerId, myId) {
   const cardNew = cardTemplate.querySelector('.element').cloneNode(true);

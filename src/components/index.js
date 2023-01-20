@@ -70,11 +70,11 @@ let userId = 1;
 // });
 
 function openProfilePopup() {
-      popupUserName.value = profileUserName.textContent;
-    popupUserPosition.value = profileUserPosition.textContent;
-    cleanValidationErrors(popupProfile, validationConfig);
-    openPopup(popupProfile);
-  }
+  popupUserName.value = profileUserName.textContent;
+  popupUserPosition.value = profileUserPosition.textContent;
+  cleanValidationErrors(popupProfile, validationConfig);
+  openPopup(popupProfile);
+}
 
 // function saveProfileFromPopup() {
 //   if (!profileSaveButton.disabled) {
@@ -85,12 +85,12 @@ function openProfilePopup() {
 // }
 
 function openCardAddPopup() {
-    popupCardName.value = '';
-    popupCardSrc.value = '';
-    cleanValidationErrors(popupCardAdd, validationConfig);
-    buttonSavePlace.disabled = true;
-    openPopup(popupCardAdd);
-  }
+  popupCardName.value = '';
+  popupCardSrc.value = '';
+  cleanValidationErrors(popupCardAdd, validationConfig);
+  buttonSavePlace.disabled = true;
+  openPopup(popupCardAdd);
+}
 
 // function saveCardfromPopup() {
 //   if (!buttonSavePlace.disabled) {
@@ -130,7 +130,7 @@ enableValidation(validationConfig);
 
 
 Promise.all([getUserProfile(), getCards()])
-// тут деструктурируете ответ от сервера, чтобы было понятнее, что пришло
+  // тут деструктурируете ответ от сервера, чтобы было понятнее, что пришло
   // .then((results) => {
   //   const userData = results[0];
   //   const cards = results[1];
@@ -138,11 +138,11 @@ Promise.all([getUserProfile(), getCards()])
   .then((results) => {
     const userData = results[0];
     const cards = results[1];
-      // тут установка данных пользователя
-      fillProfile(userData);
-      userId = userData._id;
-      // и тут отрисовка карточек
-      cards.reverse().forEach(element => {
+    // тут установка данных пользователя
+    fillProfile(userData);
+    userId = userData._id;
+    // и тут отрисовка карточек
+    cards.reverse().forEach(element => {
       const newCard = createCardElement(element.name, element.link, element.likes.length, element._id, element.owner._id, userId);
       insertCard2Page(newCard);
       if (element.likes.findIndex(e => e._id === userId) !== -1) {
@@ -166,14 +166,14 @@ Promise.all([getUserProfile(), getCards()])
 //   .then((res) => {
 //     return res.json();
 //   })
-  // .then(checkResponse)
-  // .then((data) => {
-  //   fillProfile(data);
-  //   userId = data._id;
-  //   console.log(userId);
+// .then(checkResponse)
+// .then((data) => {
+//   fillProfile(data);
+//   userId = data._id;
+//   console.log(userId);
 
-  // })
-  // .catch((err) => console.log(`Ошибка: ${err}`))
+// })
+// .catch((err) => console.log(`Ошибка: ${err}`))
 
 //загрузка карточек
 // getCards()
@@ -183,34 +183,34 @@ Promise.all([getUserProfile(), getCards()])
 //       const newCard = createCardElement(element.name, element.link, element.likes.length, element._id, element.owner._id, userId);
 //       insertCard2Page(newCard);
 //       if (element.likes.findIndex(e => e._id === userId) !== -1) {
-        // console.log(newCard);
-        // const cardLike = newCard.querySelector('.element__like');
-        // console.log(cardLike);
-        // cardLike.classList.add('element__like_active');
-  //     }
-  //   });
-  // })
-  // .catch((err) => console.log(`Ошибка: ${err}`))
+// console.log(newCard);
+// const cardLike = newCard.querySelector('.element__like');
+// console.log(cardLike);
+// cardLike.classList.add('element__like_active');
+//     }
+//   });
+// })
+// .catch((err) => console.log(`Ошибка: ${err}`))
 
-  const data = {
-    cardId: 1,
-    placeName: 'Тест класс',
-    placePhotoSrc: 'https://habrastorage.org/files/3a3/4b9/774/3a34b977425e41e5855833cb3d5c1fed.png',
-    likesNumbers: 100,
-  }
+const data = {
+  cardId: 1,
+  placeName: 'Тест класс',
+  placePhotoSrc: 'https://habrastorage.org/files/3a3/4b9/774/3a34b977425e41e5855833cb3d5c1fed.png',
+  likesNumbers: 100,
+}
 
-  const cardClass = new Card (data, '.element-template');
+const cardClass = new Card({ data }, '#element-template');
 
-  insertCard2Page(cardClass.generate());
+insertCard2Page(cardClass.generate());
 
+console.log(cardClass._setEventListeners());
 
+//запостить карточку
+function saveCardfromPopup() {
+  if (!buttonSavePlace.disabled) {
 
-  //запостить карточку
-  function saveCardfromPopup() {
-    if (!buttonSavePlace.disabled) {
-
-      renderLoading(popupCardAdd, "Сохранение...");
-      postCard(popupCardName.value, popupCardSrc.value)
+    renderLoading(popupCardAdd, "Сохранение...");
+    postCard(popupCardName.value, popupCardSrc.value)
       // .then(checkResponse)
       // .then((res) => {
       //   if (res.ok) {
@@ -218,55 +218,55 @@ Promise.all([getUserProfile(), getCards()])
       //   }
       //    return Promise.reject(res.status);
       // })
-        .then((element) => {
-          const newCard = createCardElement(element.name, element.link, element.likes.length, element._id, element.owner._id, userId);
-          insertCard2Page(newCard);
-          closePopup(popupCardAdd);
-          })
-        .catch((err) => console.log(`Ошибка: ${err}`))
-        .finally(() => {
-          renderLoading(popupCardAdd, "Создать");
-        });
-    }
+      .then((element) => {
+        const newCard = createCardElement(element.name, element.link, element.likes.length, element._id, element.owner._id, userId);
+        insertCard2Page(newCard);
+        closePopup(popupCardAdd);
+      })
+      .catch((err) => console.log(`Ошибка: ${err}`))
+      .finally(() => {
+        renderLoading(popupCardAdd, "Создать");
+      });
   }
+}
 
-    //отредактировать профиль
-    function saveProfileFromPopup() {
-      if (!profileSaveButton.disabled) {
-        renderLoading(popupProfile, "Сохранение...");
-        patchProfile(popupUserName.value, popupUserPosition.value)
-        // .then(checkResponse)
-          .then((element) => {
-            profileUserName.textContent = element.name;
-            profileUserPosition.textContent = element.about;
-            closePopup(popupProfile);
-            })
-            .catch((err) => console.log(`Ошибка: ${err}`))
-            .finally(() => {
-              renderLoading(popupProfile, "Сохранить");
-            });
-        }
-      }
+//отредактировать профиль
+function saveProfileFromPopup() {
+  if (!profileSaveButton.disabled) {
+    renderLoading(popupProfile, "Сохранение...");
+    patchProfile(popupUserName.value, popupUserPosition.value)
+      // .then(checkResponse)
+      .then((element) => {
+        profileUserName.textContent = element.name;
+        profileUserPosition.textContent = element.about;
+        closePopup(popupProfile);
+      })
+      .catch((err) => console.log(`Ошибка: ${err}`))
+      .finally(() => {
+        renderLoading(popupProfile, "Сохранить");
+      });
+  }
+}
 
-      //поменять аватар
+//поменять аватар
 
-      function updateAvatar() {
-        if (!buttonSaveAvatar.disabled) {
-          renderLoading(popupAvatar, "Сохранение...");
-          patchAvatar(popupAvatarUrl.value)
+function updateAvatar() {
+  if (!buttonSaveAvatar.disabled) {
+    renderLoading(popupAvatar, "Сохранение...");
+    patchAvatar(popupAvatarUrl.value)
 
-          // .then(checkResponse)
-          .then((res) => {
-            profileAvatar.src = popupAvatarUrl.value;
-            popupAvatarUrl.value = "";
-            closePopup(popupAvatar);
-          })
-          .catch((err) => console.log(`Ошибка: ${err}`))
-          .finally(() => {
-            renderLoading(popupAvatar, "Сохранить");
-          });
-          }
-        }
+      // .then(checkResponse)
+      .then((res) => {
+        profileAvatar.src = popupAvatarUrl.value;
+        popupAvatarUrl.value = "";
+        closePopup(popupAvatar);
+      })
+      .catch((err) => console.log(`Ошибка: ${err}`))
+      .finally(() => {
+        renderLoading(popupAvatar, "Сохранить");
+      });
+  }
+}
 
 
 
