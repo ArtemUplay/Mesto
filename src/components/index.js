@@ -1,7 +1,7 @@
 import { createCardElement, insertCard2Page } from './card_module.js';
 import { openPopup, closePopup } from './modal.js';
 import { enableValidation, cleanValidationErrors, validationConfig } from './validate.js';
-import { getUserProfile, getCards, postCard, patchProfile, patchAvatar } from './api.js';
+import { api, getUserProfile, postCard, patchProfile, patchAvatar } from './api.js';
 import { renderLoading, fillProfile, profileAvatar } from './utils.js';
 
 import '../pages/index.css';
@@ -157,8 +157,9 @@ enableValidation(validationConfig);
 //     console.log(err);
 //   });
 
+console.log(api)
 
-Promise.all([getUserProfile(), getCards()])
+Promise.all([getUserProfile(), api.getCards()])
   // тут деструктурируете ответ от сервера, чтобы было понятнее, что пришло
   // .then((results) => {
   //   const userData = results[0];
@@ -180,7 +181,7 @@ Promise.all([getUserProfile(), getCards()])
         console.log(cardElement);
         cardList.setItem(cardElement);
       }
-    },'.elements');
+    }, '.elements');
 
     cardList.renderItems();
 

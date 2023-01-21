@@ -6,10 +6,10 @@ import { delCard, likeCard, dislikeCard } from './api.js';
 function deleteCard(delBtn) {
   const cardElement = delBtn.closest('.element');
   delCard(cardElement.dataset.cardId)
-  // .then(checkResponse)
+    // .then(checkResponse)
     .then(() => {
-       cardElement.remove();
-      })
+      cardElement.remove();
+    })
     .catch((err) => console.log(`Ошибка: ${err}`))
 }
 
@@ -36,7 +36,7 @@ function deleteCard(delBtn) {
 //   }
 // }
 
-export function createCardElement (placeName, placePhotoSrc, likesNumbers, cardId, cardOwnerId, myId) {
+export function createCardElement(placeName, placePhotoSrc, likesNumbers, cardId, cardOwnerId, myId) {
   const cardNew = cardTemplate.querySelector('.element').cloneNode(true);
   const photoCardNew = cardNew.querySelector('.element__photo');
   const likesCounter = cardNew.querySelector('.element__likes-counter');
@@ -59,7 +59,7 @@ export function createCardElement (placeName, placePhotoSrc, likesNumbers, cardI
   return cardNew;
 }
 
-export function insertCard2Page (card) {
+export function insertCard2Page(card) {
   cardsSection.prepend(card);
 }
 

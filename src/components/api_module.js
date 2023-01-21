@@ -6,33 +6,6 @@ const config = {
   }
 }
 
-export default class Api {
-  constructor({ data }) {
-    this._baseUrl = data.baseUrl;
-    this._headers = data.headers;
-  }
-
-  _checkResponse(response) {
-    if (response.ok) {
-      return response.json();
-    }
-
-    return Promise.reject(response.status);
-  }
-
-  getCards() {
-    return fetch(`${this._baseUrl}cards`, {
-      method: 'GET',
-      headers: this._headers
-    })
-      .then(this._checkResponse);
-  }
-}
-
-const api = new Api({ data: config });
-
-console.log(api);
-
 function checkResponse(res) {
   if (res.ok) {
     return res.json();
@@ -54,19 +27,19 @@ export const getUserProfile = () => {
   // })
 }
 
-// export const getCards = () => {
-//   return fetch(`${config.baseUrl}cards`, {
-//     method: 'GET',
-//     headers: config.headers
-//   })
-//     .then(checkResponse)
-// .then((res) => {
-//   if (res.ok) {
-//     return res.json();
-//   }
-//    return Promise.reject(res.status);
-// })
-// }
+export const getCards = () => {
+  return fetch(`${config.baseUrl}cards`, {
+    method: 'GET',
+    headers: config.headers
+  })
+    .then(checkResponse)
+  // .then((res) => {
+  //   if (res.ok) {
+  //     return res.json();
+  //   }
+  //    return Promise.reject(res.status);
+  // })
+}
 
 export const postCard = (cardName, cardUrl) => {
   return fetch(`${config.baseUrl}cards`, {
@@ -163,8 +136,4 @@ export const patchAvatar = (avatarUrl) => {
   //   }
   //    return Promise.reject(res.status);
   // })
-}
-
-export {
-  api
 }
