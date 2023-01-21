@@ -1,12 +1,14 @@
-import { dislikeCard, likeCard } from "./api";
+import { api } from "./api";
 
 export default class Card {
-  constructor(data, cardSelector) {
+  constructor(data, liker, disliker, cardSelector) {
     this._placeName = data.name;
     this._image = data.link;
     this._likesNumber = data.likes.length;
     this._cardId = data._id;
     this._selector = cardSelector;
+    this._liker = liker;
+    this._disliker = disliker;
   }
 
   _getElement() {
@@ -43,18 +45,20 @@ export default class Card {
 
   _toggleLike() {
     if (this.buttonLike.classList.contains('element__like_active')) {
-      dislikeCard(this._cardId)
+      this._disliker(this._cardId)
         .then(data => {
-          this._element.querySelector('.element__likes-counter').textContent = this._likesNumber;
+          console.log(data);
+          this._element.querySelector('.element__likes-counter').textContent = data.likes.length;
           this.buttonLike.classList.remove('element__like_active');
         })
         .catch(err => {
           console.log(`Ошибка: ${err}`);
         })
     } else {
-      likeCard(this._cardId)
+      this._liker(this._cardId)
         .then(data => {
-          this._element.querySelector('.element__likes-counter').textContent = this._likesNumber;
+          console.log(data);
+          this._element.querySelector('.element__likes-counter').textContent = data.likes.length;
           this.buttonLike.classList.add('element__like_active');
         })
         .catch(err => {

@@ -157,8 +157,6 @@ enableValidation(validationConfig);
 //     console.log(err);
 //   });
 
-console.log(api)
-
 Promise.all([getUserProfile(), api.getCards()])
   // тут деструктурируете ответ от сервера, чтобы было понятнее, что пришло
   // .then((results) => {
@@ -176,9 +174,8 @@ Promise.all([getUserProfile(), api.getCards()])
     const cardList = new Section({
       data: cards,
       renderer: (element) => {
-        const newCard = new Card(element, '#element-template');
+        const newCard = new Card(element, api.likeCard.bind(api), api.dislikeCard.bind(api), '#element-template');
         const cardElement = newCard.generate();
-        console.log(cardElement);
         cardList.setItem(cardElement);
       }
     }, '.elements');
