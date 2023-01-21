@@ -7,6 +7,7 @@ import { renderLoading, fillProfile, profileAvatar } from './utils.js';
 import '../pages/index.css';
 
 import Card from './Card.js';
+import Section from './Section.js';
 
 const buttonEdit = document.querySelector('.profile__edit-button');
 const buttonAddPlace = document.querySelector('.profile__add-button');
@@ -170,16 +171,31 @@ Promise.all([getUserProfile(), getCards()])
     fillProfile(userData);
     userId = userData._id;
     // и тут отрисовка карточек
-    cards.reverse().forEach(cardElement => {
-      console.log(cardElement);
-      // const newCard = createCardElement(element.name, element.link, element.likes.length, element._id, element.owner._id, userId);
-      const newCard = new Card(cardElement, '#element-template');
-      insertCard2Page(newCard.generate());
-      if (cardElement.likes.findIndex(e => e._id === userId) !== -1) {
-        const cardLike = newCard.querySelector('.element__like');
-        cardLike.classList.add('element__like_active');
+
+    const cardList = new Section({
+      data: cards,
+      renderer: (element) => {
+        const newCard = new Card(element, '#element-template');
+        const cardElement = newCard.generate();
+        console.log(cardElement);
+        cardList.setItem(cardElement);
       }
-    });
+    },'.elements');
+
+    cardList.renderItems();
+
+
+
+    // cards.reverse().forEach(cardElement => {
+    //   console.log(cardElement);
+    //   // const newCard = createCardElement(element.name, element.link, element.likes.length, element._id, element.owner._id, userId);
+    //   const newCard = new Card(cardElement, '#element-template');
+    //   insertCard2Page(newCard.generate());
+    //   if (cardElement.likes.findIndex(e => e._id === userId) !== -1) {
+    //     const cardLike = newCard.querySelector('.element__like');
+    //     cardLike.classList.add('element__like_active');
+    //   }
+    // });
   })
   .catch(err => {
     // тут ловим ошибку
