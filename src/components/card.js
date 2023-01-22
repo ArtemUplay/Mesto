@@ -1,7 +1,7 @@
 import { api } from "./api";
 
 export default class Card {
-  constructor(data, liker, disliker, cardSelector) {
+  constructor(data, liker, disliker, cardSelector, popupOpener) {
     this._placeName = data.name;
     this._image = data.link;
     this._likesNumber = data.likes.length;
@@ -9,6 +9,7 @@ export default class Card {
     this._selector = cardSelector;
     this._liker = liker;
     this._disliker = disliker;
+    this._popupOpener = popupOpener;
   }
 
   _getElement() {
@@ -41,6 +42,17 @@ export default class Card {
     this.buttonLike.addEventListener('click', () => {
       this._toggleLike();
     })
+
+
+
+    this.photoPlace = this._element.querySelector('.element__photo');
+    console.log(this.photoPlace);
+    this.photoPlace.addEventListener('click', () => {
+      console.log(this._placeName);
+      this._popupOpener(this._placeName, this._image);
+    })
+
+
   }
 
   _toggleLike() {

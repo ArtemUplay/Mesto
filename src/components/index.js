@@ -9,6 +9,7 @@ import '../pages/index.css';
 import Card from './Card.js';
 import Section from './Section.js';
 import Popup from './Popup.js';
+import PopupWithImage from './PopupWithImage.js';
 
 const buttonEdit = document.querySelector('.profile__edit-button');
 const buttonAddPlace = document.querySelector('.profile__add-button');
@@ -113,13 +114,15 @@ function openCardAddPopup() {
 
 const popupEdit = new Popup('.popup_type_profile');
 const popupAddCard = new Popup('.popup_type_card');
-const popupImage = new Popup('.popup_type_img');
+const popupImage = new PopupWithImage('.popup_type_img');
+// popupImage.open(1,2);
 
 buttonEdit.addEventListener('click', popupEdit.open.bind(popupEdit));
 buttonAddPlace.addEventListener('click', popupAddCard.open.bind(popupAddCard))
 
 popupEdit.setEventListeners();
 popupAddCard.setEventListeners();
+popupImage.setEventListeners();
 
 // buttonEdit.addEventListener('click', openProfilePopup);
 userProfileForm.addEventListener('submit', saveProfileFromPopup);
@@ -184,7 +187,7 @@ Promise.all([getUserProfile(), api.getCards()])
     const cardList = new Section({
       data: cards,
       renderer: (element) => {
-        const newCard = new Card(element, (cardId) => { return api.likeCard(cardId) }, (cardId) => { return api.dislikeCard(cardId) }, '#element-template');
+        const newCard = new Card(element, (cardId) => { return api.likeCard(cardId) }, (cardId) => { return api.dislikeCard(cardId) }, '#element-template', popupImage.open.bind(popupImage));
         const cardElement = newCard.generate();
         cardList.setItem(cardElement);
       }
