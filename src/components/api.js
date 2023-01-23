@@ -43,11 +43,21 @@ export default class Api {
     })
       .then(this._checkResponse)
   }
+
+  postCard({ name, position }) {
+    return fetch(`${this._baseUrl}cards`, {
+      method: 'POST',
+      body: JSON.stringify({
+        name: name,
+        link: position
+      }),
+      headers: this._headers
+    })
+      .then(this._checkResponse)
+  }
 }
 
 const api = new Api({ data: config });
-
-console.log(api);
 
 function checkResponse(res) {
   if (res.ok) {

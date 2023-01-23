@@ -10,6 +10,7 @@ import Card from './Card.js';
 import Section from './Section.js';
 import Popup from './Popup.js';
 import PopupWithImage from './PopupWithImage.js';
+import PopupWithForm from './PopupWithForm.js';
 
 const buttonEdit = document.querySelector('.profile__edit-button');
 const buttonAddPlace = document.querySelector('.profile__add-button');
@@ -113,22 +114,19 @@ function openCardAddPopup() {
 // });
 
 const popupEdit = new Popup('.popup_type_profile');
-const popupAddCard = new Popup('.popup_type_card');
 const popupImage = new PopupWithImage('.popup_type_img');
 // popupImage.open(1,2);
 
 buttonEdit.addEventListener('click', popupEdit.open.bind(popupEdit));
-buttonAddPlace.addEventListener('click', popupAddCard.open.bind(popupAddCard))
 
 popupEdit.setEventListeners();
-popupAddCard.setEventListeners();
 popupImage.setEventListeners();
 
 // buttonEdit.addEventListener('click', openProfilePopup);
 userProfileForm.addEventListener('submit', saveProfileFromPopup);
 
 // buttonAddPlace.addEventListener('click', openCardAddPopup);
-cardCreateForm.addEventListener('submit', saveCardfromPopup);
+// cardCreateForm.addEventListener('submit', saveCardfromPopup);
 
 buttonAvatarEdit.addEventListener('click', () => {
   popupAvatarUrl.textContent = "";
@@ -195,6 +193,18 @@ Promise.all([getUserProfile(), api.getCards()])
 
     cardList.renderItems();
 
+    const popupAddCard = new PopupWithForm('.popup_type_card', () => {
+      api.postCard(popupAddCard._getInputValues())
+        .then((element) => {
+          cardList._renderedItems.unshift(element);
+          cardList.renderItems();
+        })
+        .catch((err) => console.log(`Ошибка: ${err}`))
+    });
+
+    buttonAddPlace.addEventListener('click', popupAddCard.open.bind(popupAddCard))
+    popupAddCard.setEventListeners();
+
     // cards.reverse().forEach(cardElement => {
     //   console.log(cardElement);
     //   // const newCard = createCardElement(element.name, element.link, element.likes.length, element._id, element.owner._id, userId);
@@ -255,29 +265,29 @@ const data = {
 }
 
 //запостить карточку
-function saveCardfromPopup() {
-  if (!buttonSavePlace.disabled) {
+// function saveCardfromPopup() {
+//   if (!buttonSavePlace.disabled) {
 
-    renderLoading(popupCardAdd, "Сохранение...");
-    postCard(popupCardName.value, popupCardSrc.value)
-      // .then(checkResponse)
-      // .then((res) => {
-      //   if (res.ok) {
-      //     return res.json();
-      //   }
-      //    return Promise.reject(res.status);
-      // })
-      .then((element) => {
-        const newCard = createCardElement(element.name, element.link, element.likes.length, element._id, element.owner._id, userId);
-        insertCard2Page(newCard);
-        closePopup(popupCardAdd);
-      })
-      .catch((err) => console.log(`Ошибка: ${err}`))
-      .finally(() => {
-        renderLoading(popupCardAdd, "Создать");
-      });
-  }
-}
+//     renderLoading(popupCardAdd, "Сохранение...");
+//     postCard(popupCardName.value, popupCardSrc.value)
+//       // .then(checkResponse)
+//       // .then((res) => {
+//       //   if (res.ok) {
+//       //     return res.json();
+//       //   }
+//       //    return Promise.reject(res.status);
+//       // })
+//       .then((element) => {
+//         const newCard = createCardElement(element.name, element.link, element.likes.length, element._id, element.owner._id, userId);
+//         insertCard2Page(newCard);
+//         closePopup(popupCardAdd);
+//       })
+//       .catch((err) => console.log(`Ошибка: ${err}`))
+//       .finally(() => {
+//         renderLoading(popupCardAdd, "Создать");
+//       });
+//   }
+// }
 
 //отредактировать профиль
 function saveProfileFromPopup() {
