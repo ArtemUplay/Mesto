@@ -11,6 +11,7 @@ import Section from './Section.js';
 import Popup from './Popup.js';
 import PopupWithImage from './PopupWithImage.js';
 import PopupWithForm from './PopupWithForm.js';
+import UserInfo from './UserInfo.js';
 
 const buttonEdit = document.querySelector('.profile__edit-button');
 const buttonAddPlace = document.querySelector('.profile__add-button');
@@ -40,6 +41,14 @@ const buttonSaveAvatar = popupAvatar.querySelector('.popup__button');
 const popupAvatarUrl = userAvatarForm.elements.position;
 
 let userId = 1;
+const userProfileSelectors = {
+ usernameSelector: '.profile__username',
+ userAboutSelector: '.profile__user-position',
+ userAvatarSelector: '.profile__avatar'
+}
+
+const userProfile = new UserInfo(userProfileSelectors);
+
 
 // const initialCards = [
 //   {
@@ -113,17 +122,15 @@ function openCardAddPopup() {
 //   }
 // });
 
-const popupEdit = new Popup('.popup_type_profile');
+
 const popupImage = new PopupWithImage('.popup_type_img');
 // popupImage.open(1,2);
 
-buttonEdit.addEventListener('click', popupEdit.open.bind(popupEdit));
 
-popupEdit.setEventListeners();
 popupImage.setEventListeners();
 
 // buttonEdit.addEventListener('click', openProfilePopup);
-userProfileForm.addEventListener('submit', saveProfileFromPopup);
+// userProfileForm.addEventListener('submit', saveProfileFromPopup);
 
 // buttonAddPlace.addEventListener('click', openCardAddPopup);
 // cardCreateForm.addEventListener('submit', saveCardfromPopup);
@@ -168,7 +175,7 @@ enableValidation(validationConfig);
 //     console.log(err);
 //   });
 
-Promise.all([getUserProfile(), api.getCards()])
+Promise.all([api.getUserProfile(), api.getCards()])
   // тут деструктурируете ответ от сервера, чтобы было понятнее, что пришло
   // .then((results) => {
   //   const userData = results[0];
@@ -178,8 +185,11 @@ Promise.all([getUserProfile(), api.getCards()])
     const userData = results[0];
     const cards = results[1];
     // тут установка данных пользователя
-    fillProfile(userData);
+    // fillProfile(userData);
+
     userId = userData._id;
+    userProfile.setUserInfo(userData, console.log);
+
     // и тут отрисовка карточек
 
     const cardList = new Section({
@@ -204,6 +214,36 @@ Promise.all([getUserProfile(), api.getCards()])
 
     buttonAddPlace.addEventListener('click', popupAddCard.open.bind(popupAddCard))
     popupAddCard.setEventListeners();
+
+    const popupEdit = new PopupWithForm('.popup_type_profile', () => {
+      userProfile.setUserInfo(popupEdit._getInputValues(), api.patchProfile.bind(api));
+    });
+
+    buttonEdit.addEventListener('click', popupEdit.open.bind(popupEdit));
+
+    popupEdit.setEventListeners();
+
+
+
+
+
+      // if (!profileSaveButton.disabled) {
+  //   renderLoading(popupProfile, "Сохранение...");
+  //   patchProfile(popupUserName.value, popupUserPosition.value)
+  //     // .then(checkResponse)
+  //     .then((element) => {
+  //       profileUserName.textContent = element.name;
+  //       profileUserPosition.textContent = element.about;
+  //       closePopup(popupProfile);
+  //     })
+  //     .catch((err) => console.log(`Ошибка: ${err}`))
+  //     .finally(() => {
+  //       renderLoading(popupProfile, "Сохранить");
+  //     });
+
+
+
+
 
     // cards.reverse().forEach(cardElement => {
     //   console.log(cardElement);
@@ -290,22 +330,26 @@ const data = {
 // }
 
 //отредактировать профиль
-function saveProfileFromPopup() {
-  if (!profileSaveButton.disabled) {
-    renderLoading(popupProfile, "Сохранение...");
-    patchProfile(popupUserName.value, popupUserPosition.value)
-      // .then(checkResponse)
-      .then((element) => {
-        profileUserName.textContent = element.name;
-        profileUserPosition.textContent = element.about;
-        closePopup(popupProfile);
-      })
-      .catch((err) => console.log(`Ошибка: ${err}`))
-      .finally(() => {
-        renderLoading(popupProfile, "Сохранить");
-      });
-  }
-}
+// function saveProfileFromPopup() {
+  // if (!profileSaveButton.disabled) {
+  //   renderLoading(popupProfile, "Сохранение...");
+  //   patchProfile(popupUserName.value, popupUserPosition.value)
+  //     // .then(checkResponse)
+  //     .then((element) => {
+  //       profileUserName.textContent = element.name;
+  //       profileUserPosition.textContent = element.about;
+  //       closePopup(popupProfile);
+  //     })
+  //     .catch((err) => console.log(`Ошибка: ${err}`))
+  //     .finally(() => {
+  //       renderLoading(popupProfile, "Сохранить");
+  //     });
+//   }
+// }
+
+
+
+
 
 //поменять аватар
 

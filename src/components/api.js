@@ -55,6 +55,29 @@ export default class Api {
     })
       .then(this._checkResponse)
   }
+
+  getUserProfile() {
+    return fetch(`${this._baseUrl}users/me`, {
+      method: 'GET',
+      headers: this._headers
+    })
+      .then(this._checkResponse)
+  }
+
+  patchProfile({ name, about }) {
+
+    return fetch(`${this._baseUrl}users/me`, {
+      method: 'PATCH',
+      body: JSON.stringify({
+        name: name,
+        about: about
+      }),
+      headers: this._headers
+    })
+      .then(this._checkResponse)
+  }
+
+
 }
 
 const api = new Api({ data: config });
@@ -66,19 +89,7 @@ function checkResponse(res) {
   return Promise.reject(res.status);
 }
 
-export const getUserProfile = () => {
-  return fetch(`${config.baseUrl}users/me`, {
-    method: 'GET',
-    headers: config.headers
-  })
-    .then(checkResponse)
-  // .then((res) => {
-  //   if (res.ok) {
-  //     return res.json();
-  //   }
-  //    return Promise.reject(res.status);
-  // })
-}
+
 
 // export const getCards = () => {
 //   return fetch(`${config.baseUrl}cards`, {
@@ -104,12 +115,6 @@ export const postCard = (cardName, cardUrl) => {
     headers: config.headers
   })
     .then(checkResponse)
-  // .then((res) => {
-  //   if (res.ok) {
-  //     return res.json();
-  //   }
-  //    return Promise.reject(res.status);
-  // })
 }
 
 export const delCard = (cardId) => {
@@ -126,52 +131,10 @@ export const delCard = (cardId) => {
   // })
 }
 
-export const likeCard = (cardId) => {
-  return fetch(`${config.baseUrl}cards/likes/${cardId}`, {
-    method: 'PUT',
-    headers: config.headers
-  })
-    .then(checkResponse)
-  // .then((res) => {
-  //   if (res.ok) {
-  //     return res.json();
-  //   }
-  //    return Promise.reject(res.status);
-  // })
-}
 
-export const dislikeCard = (cardId) => {
-  return fetch(`${config.baseUrl}cards/likes/${cardId}`, {
-    method: 'DELETE',
-    headers: config.headers
-  })
-    .then(checkResponse)
-  // .then((res) => {
-  //   if (res.ok) {
-  //     return res.json();
-  //   }
-  //    return Promise.reject(res.status);
-  // })
-}
 
-export const patchProfile = (userName, userPosition) => {
 
-  return fetch(`${config.baseUrl}users/me`, {
-    method: 'PATCH',
-    body: JSON.stringify({
-      name: userName,
-      about: userPosition
-    }),
-    headers: config.headers
-  })
-    .then(checkResponse)
-  // .then((res) => {
-  //   if (res.ok) {
-  //     return res.json();
-  //   }
-  //    return Promise.reject(res.status);
-  // })
-}
+
 
 export const patchAvatar = (avatarUrl) => {
 
