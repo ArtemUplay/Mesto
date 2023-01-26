@@ -4,6 +4,7 @@ export default class Card {
   constructor(data, myId, liker, disliker, deleter, cardSelector, popupOpener) {
     this._placeName = data.name;
     this._image = data.link;
+    this._likes = data.likes;
     this._likesNumber = data.likes.length;
     this._cardId = data._id;
     this._ownerId = data.owner._id;
@@ -37,11 +38,14 @@ export default class Card {
 
     if (this._ownerId === this._myId) {
       this._element.querySelector('.element__delete-button').style.display = 'block';
+    }
 
+    if (this._likes.findIndex(e => e._id === this._myId) !== -1) {
+      const cardLike = this._element.querySelector('.element__like');
+      cardLike.classList.add('element__like_active');
     }
 
     return this._element;
-
   }
 
   _setEventListeners() {
