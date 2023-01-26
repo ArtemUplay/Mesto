@@ -1,6 +1,6 @@
 import { createCardElement, insertCard2Page } from './card_module.js';
 import { openPopup, closePopup } from './modal.js';
-import { enableValidation, cleanValidationErrors, validationConfig } from './validate.js';
+// import { enableValidation, cleanValidationErrors, validationConfig } from './validate.js';
 import { api, getUserProfile, postCard, patchProfile, patchAvatar } from './api.js';
 import { renderLoading, fillProfile, profileAvatar } from './utils.js';
 
@@ -12,6 +12,7 @@ import Popup from './Popup.js';
 import PopupWithImage from './PopupWithImage.js';
 import PopupWithForm from './PopupWithForm.js';
 import UserInfo from './UserInfo.js';
+import FormValidator from './FormValidator.js';
 
 const buttonEdit = document.querySelector('.profile__edit-button');
 const buttonAddPlace = document.querySelector('.profile__add-button');
@@ -42,10 +43,18 @@ const popupAvatarUrl = userAvatarForm.elements.position;
 
 let userId = 1;
 const userProfileSelectors = {
- usernameSelector: '.profile__username',
- userAboutSelector: '.profile__user-position',
- userAvatarSelector: '.profile__avatar'
+  usernameSelector: '.profile__username',
+  userAboutSelector: '.profile__user-position',
+  userAvatarSelector: '.profile__avatar'
 }
+
+const validationConfig = {
+  formSelector: ".popup__input-container",
+  inputSelector: ".popup__item",
+  submitButtonSelector: ".popup__button",
+  inputErrorClass: "popup__item_type_error",
+  inputErrorActiveClass: "popup__item-error_active",
+};
 
 const userProfile = new UserInfo(userProfileSelectors);
 
@@ -85,7 +94,7 @@ const userProfile = new UserInfo(userProfileSelectors);
 function openProfilePopup() {
   popupUserName.value = profileUserName.textContent;
   popupUserPosition.value = profileUserPosition.textContent;
-  cleanValidationErrors(popupProfile, validationConfig);
+  // cleanValidationErrors(popupProfile, validationConfig);
   openPopup(popupProfile);
 }
 
@@ -100,7 +109,7 @@ function openProfilePopup() {
 function openCardAddPopup() {
   popupCardName.value = '';
   popupCardSrc.value = '';
-  cleanValidationErrors(popupCardAdd, validationConfig);
+  // cleanValidationErrors(popupCardAdd, validationConfig);
   buttonSavePlace.disabled = true;
   openPopup(popupCardAdd);
 }
@@ -137,14 +146,14 @@ popupImage.setEventListeners();
 
 buttonAvatarEdit.addEventListener('click', () => {
   popupAvatarUrl.textContent = "";
-  cleanValidationErrors(popupAvatar, validationConfig);
+  // cleanValidationErrors(popupAvatar, validationConfig);
   buttonSaveAvatar.disabled = true;
   openPopup(popupAvatar);
 })
 
 userAvatarForm.addEventListener('submit', updateAvatar);
 
-enableValidation(validationConfig);
+// enableValidation(validationConfig);
 
 
 
@@ -212,12 +221,18 @@ Promise.all([api.getUserProfile(), api.getCards()])
         .catch((err) => console.log(`Ошибка: ${err}`))
     });
 
-    buttonAddPlace.addEventListener('click', popupAddCard.open.bind(popupAddCard))
-    popupAddCard.setEventListeners();
-
     const popupEdit = new PopupWithForm('.popup_type_profile', () => {
       userProfile.setUserInfo(popupEdit._getInputValues(), api.patchProfile.bind(api));
     });
+
+    buttonAddPlace.addEventListener('click', popupAddCard.open.bind(popupAddCard))
+    popupAddCard.setEventListeners();
+
+    const popupEditValidation = new FormValidator(validationConfig, popupEdit._formElement);
+    popupEditValidation.enableValidation();
+
+    const popupAddCardValidation = new FormValidator(validationConfig, popupAddCard._formElement);
+    popupAddCardValidation.enableValidation();
 
     buttonEdit.addEventListener('click', popupEdit.open.bind(popupEdit));
 
@@ -227,19 +242,19 @@ Promise.all([api.getUserProfile(), api.getCards()])
 
 
 
-      // if (!profileSaveButton.disabled) {
-  //   renderLoading(popupProfile, "Сохранение...");
-  //   patchProfile(popupUserName.value, popupUserPosition.value)
-  //     // .then(checkResponse)
-  //     .then((element) => {
-  //       profileUserName.textContent = element.name;
-  //       profileUserPosition.textContent = element.about;
-  //       closePopup(popupProfile);
-  //     })
-  //     .catch((err) => console.log(`Ошибка: ${err}`))
-  //     .finally(() => {
-  //       renderLoading(popupProfile, "Сохранить");
-  //     });
+    // if (!profileSaveButton.disabled) {
+    //   renderLoading(popupProfile, "Сохранение...");
+    //   patchProfile(popupUserName.value, popupUserPosition.value)
+    //     // .then(checkResponse)
+    //     .then((element) => {
+    //       profileUserName.textContent = element.name;
+    //       profileUserPosition.textContent = element.about;
+    //       closePopup(popupProfile);
+    //     })
+    //     .catch((err) => console.log(`Ошибка: ${err}`))
+    //     .finally(() => {
+    //       renderLoading(popupProfile, "Сохранить");
+    //     });
 
 
 
@@ -331,19 +346,19 @@ const data = {
 
 //отредактировать профиль
 // function saveProfileFromPopup() {
-  // if (!profileSaveButton.disabled) {
-  //   renderLoading(popupProfile, "Сохранение...");
-  //   patchProfile(popupUserName.value, popupUserPosition.value)
-  //     // .then(checkResponse)
-  //     .then((element) => {
-  //       profileUserName.textContent = element.name;
-  //       profileUserPosition.textContent = element.about;
-  //       closePopup(popupProfile);
-  //     })
-  //     .catch((err) => console.log(`Ошибка: ${err}`))
-  //     .finally(() => {
-  //       renderLoading(popupProfile, "Сохранить");
-  //     });
+// if (!profileSaveButton.disabled) {
+//   renderLoading(popupProfile, "Сохранение...");
+//   patchProfile(popupUserName.value, popupUserPosition.value)
+//     // .then(checkResponse)
+//     .then((element) => {
+//       profileUserName.textContent = element.name;
+//       profileUserPosition.textContent = element.about;
+//       closePopup(popupProfile);
+//     })
+//     .catch((err) => console.log(`Ошибка: ${err}`))
+//     .finally(() => {
+//       renderLoading(popupProfile, "Сохранить");
+//     });
 //   }
 // }
 
