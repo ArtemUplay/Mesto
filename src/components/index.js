@@ -204,7 +204,9 @@ Promise.all([api.getUserProfile(), api.getCards()])
     const cardList = new Section({
       data: cards,
       renderer: (element) => {
-        const newCard = new Card(element, (cardId) => { return api.likeCard(cardId) }, (cardId) => { return api.dislikeCard(cardId) }, '#element-template', popupImage.open.bind(popupImage));
+        const newCard = new Card(element, userId, (cardId) => { return api.likeCard(cardId) }, (cardId) => { return api.dislikeCard(cardId) }, (cardId) => api.delCard(cardId), '#element-template', popupImage.open.bind(popupImage));
+
+
         const cardElement = newCard.generate();
         cardList.setItem(cardElement);
       }

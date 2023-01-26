@@ -1,7 +1,7 @@
 const cardTemplate = document.querySelector('#element-template').content;
 const cardsSection = document.querySelector('.elements');
 import { openCardViewPopup, checkResponse } from './utils.js';
-import { delCard, likeCard, dislikeCard } from './api.js';
+// import { delCard, likeCard, dislikeCard } from './api.js';
 
 function deleteCard(delBtn) {
   const cardElement = delBtn.closest('.element');

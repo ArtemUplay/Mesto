@@ -1,14 +1,17 @@
 import { api } from "./api";
 
 export default class Card {
-  constructor(data, liker, disliker, cardSelector, popupOpener) {
+  constructor(data, myId, liker, disliker, deleter, cardSelector, popupOpener) {
     this._placeName = data.name;
     this._image = data.link;
     this._likesNumber = data.likes.length;
     this._cardId = data._id;
+    this._ownerId = data.owner._id;
+    this._myId = myId;
     this._selector = cardSelector;
     this._liker = liker;
     this._disliker = disliker;
+    this._deleter = deleter;
     this._popupOpener = popupOpener;
   }
 
@@ -32,6 +35,11 @@ export default class Card {
     this._element.querySelector('.element__heading').textContent = this._placeName;
     this._element.querySelector('.element__likes-counter').textContent = this._likesNumber;
 
+    if (this._ownerId === this._myId) {
+      this._element.querySelector('.element__delete-button').style.display = 'block';
+
+    }
+
     return this._element;
 
   }
@@ -46,11 +54,11 @@ export default class Card {
 
 
     this.photoPlace = this._element.querySelector('.element__photo');
-    console.log(this.photoPlace);
     this.photoPlace.addEventListener('click', () => {
-      console.log(this._placeName);
       this._popupOpener(this._placeName, this._image);
     })
+
+    this._element.querySelector('.element__delete-button').addEventListener('click', () => this._deleteCard());
 
 
   }
@@ -78,4 +86,14 @@ export default class Card {
         })
     }
   }
+
+  _deleteCard() {
+    const cardElement = this._element.querySelector('.element__delete-button').closest('.element');
+    this._deleter(cardElement.dataset.cardId)
+      .then(() => {
+        cardElement.remove();
+      })
+      .catch((err) => console.log(`Ошибка: ${err}`))
+  }
+
 }
