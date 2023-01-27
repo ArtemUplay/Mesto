@@ -11,12 +11,10 @@ export default class UserInfo {
   }
 
   setUserInfo(userdata, apiUserDataPoster) {
-    // console.log(apiUserDataPoster);
     apiUserDataPoster(userdata)
-      .then((data) => {
+      .then((res) => {
         document.querySelector(this._usernameSelector).textContent = userdata.name;
         document.querySelector(this._userAboutSelector).textContent = userdata.about;
-        // console.log(data)
       })
   }
 

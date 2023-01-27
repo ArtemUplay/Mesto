@@ -1,21 +1,26 @@
 import Popup from "./Popup";
 
 export default class PopupWithForm extends Popup {
-  constructor(popupSelector, handleFormSubmit) {
+  constructor(popupSelector, handleFormSubmit, defaultFieldsValues) {
     super(popupSelector);
     this._handleFormSubmit = handleFormSubmit;
+    this._defaultFieldsValues = defaultFieldsValues;
     this._formElement = document.querySelector(popupSelector).querySelector('.popup__input-container');
+
+    console.log(this._defaultFieldsValues);
+
     // this._validationClearer = validationClearer;
   }
 
-  // open() {
-  //   this._validationClearer();
-  //   super.open();
-  // }
+  open() {
+    this._setInputValues(this._defaultFieldsValues);
+    super.open();
+  }
 
   _renderLoading(btnText) {
     this._btnSave = document.querySelector(this._popupSelector).querySelector('.popup__button');
     this._btnSave.textContent = btnText;
+    console.log(this._btnSave.textContent);
     // const normBtnTxt = btnSave.textContent;
     // if (isLoading) {
     //   btnSave.textContent = "Сохранение...";
@@ -35,25 +40,52 @@ export default class PopupWithForm extends Popup {
     return this._formValues;
   }
 
+  _setInputValues(formData) {
+    this._inputList = document.querySelector(this._popupSelector).querySelectorAll('.popup__item');
+    this._inputList.forEach((input) => {
+      console.log(input.name);
+      if (typeof formData[input.name] !== "undefined") {
+        input.value = formData[input.name];
+      }
+    })
+    //есть массим инпутов
+    //есть объект с данными пользователя
+    //пробежаться по объекту с данными пользователя
+    //если находится соответствие поля объекта и инпута, поменять значение инпута
+
+
+    // this._formValues = {};
+    // this._inputList.forEach(input => {
+    //   this._formValues[input.name] = input.value;
+    // })
+    // for (let key in formData) {
+    //   if (key in this._inputList) {
+    //     this._inputList
+
+    //   }
+    //   this._formValues[key] = formData[key];
+    // }
+
+  }
+
   setEventListeners() {
     document.querySelector(this._popupSelector).addEventListener('submit', (evt) => {
       evt.preventDefault();
-      this._renderLoading('1');
-      // console.log(this._handleFormSubmit);
+      this._renderLoading('Сохранение...');
       this._handleFormSubmit(this._getInputValues())
-        .finally((result) => {
-          // console.log(result);
-          this._renderLoading('2');
+        .then(() => {
+          this.close();
         })
-
-      this.close();
+        .catch((err) => console.log(`Ошибка: ${err}`))
+        .finally(() => {
+        this._renderLoading('Сохранить');
+          });
     })
     super.setEventListeners();
   }
 
   close() {
     document.querySelector(this._popupSelector).querySelector('.popup__input-container').reset();
-
     super.close();
   }
 }
