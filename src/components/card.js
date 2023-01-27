@@ -1,5 +1,3 @@
-import { api } from "./api";
-
 export default class Card {
   constructor(data, myId, liker, disliker, deleter, cardSelector, popupOpener) {
     this._placeName = data.name;

@@ -144,14 +144,14 @@ popupImage.setEventListeners();
 // buttonAddPlace.addEventListener('click', openCardAddPopup);
 // cardCreateForm.addEventListener('submit', saveCardfromPopup);
 
-buttonAvatarEdit.addEventListener('click', () => {
-  popupAvatarUrl.textContent = "";
-  // cleanValidationErrors(popupAvatar, validationConfig);
-  buttonSaveAvatar.disabled = true;
-  openPopup(popupAvatar);
-})
+// buttonAvatarEdit.addEventListener('click', () => {
+//   popupAvatarUrl.textContent = "";
+//   // cleanValidationErrors(popupAvatar, validationConfig);
+//   buttonSaveAvatar.disabled = true;
+//   openPopup(popupAvatar);
+// })
 
-userAvatarForm.addEventListener('submit', updateAvatar);
+// userAvatarForm.addEventListener('submit', updateAvatar);
 
 // enableValidation(validationConfig);
 
@@ -197,7 +197,8 @@ Promise.all([api.getUserProfile(), api.getCards()])
     // fillProfile(userData);
 
     userId = userData._id;
-    userProfile.setUserInfo(userData, console.log);
+    // userProfile.setUserInfo(userData, console.log);
+    // userProfile.setUserAvatar(userData, console.log);
 
     // и тут отрисовка карточек
 
@@ -224,6 +225,7 @@ Promise.all([api.getUserProfile(), api.getCards()])
     });
 
     const popupEdit = new PopupWithForm('.popup_type_profile', () => {
+      console.log(api.patchProfile.bind(api))
       userProfile.setUserInfo(popupEdit._getInputValues(), api.patchProfile.bind(api));
     });
 
@@ -236,9 +238,30 @@ Promise.all([api.getUserProfile(), api.getCards()])
     const popupAddCardValidation = new FormValidator(validationConfig, popupAddCard._formElement);
     popupAddCardValidation.enableValidation();
 
+    const popupAvatar = new PopupWithForm('.popup_type_avatar', () => {
+      const avatar = popupAvatar._getInputValues();
+      userProfile.setUserAvatar(avatar, api.patchAvatar.bind(api));
+
+      // if (!buttonSaveAvatar.disabled) {
+      // renderLoading(popupAvatar, "Сохранение...");
+      // api.patchAvatar(avatar)
+      //   .then((res) => {
+      //     profileAvatar.src = avatar.value;
+      //     userProfile.setUserAvatar(avatar, api.patchAvatar)
+      //   })
+      //   .catch((err) => console.log(`Ошибка: ${err}`))
+      //   .finally(() => {
+      // renderLoading(popupAvatar, "Сохранить");
+      //   });
+      // }
+    })
+
     buttonEdit.addEventListener('click', popupEdit.open.bind(popupEdit));
 
+    buttonAvatarEdit.addEventListener('click', popupAvatar.open.bind(popupAvatar));
+
     popupEdit.setEventListeners();
+    popupAvatar.setEventListeners();
 
 
 
@@ -370,23 +393,23 @@ const data = {
 
 //поменять аватар
 
-function updateAvatar() {
-  if (!buttonSaveAvatar.disabled) {
-    renderLoading(popupAvatar, "Сохранение...");
-    patchAvatar(popupAvatarUrl.value)
+// function updateAvatar() {
+//   if (!buttonSaveAvatar.disabled) {
+//     renderLoading(popupAvatar, "Сохранение...");
+//     patchAvatar(popupAvatarUrl.value)
 
-      // .then(checkResponse)
-      .then((res) => {
-        profileAvatar.src = popupAvatarUrl.value;
-        popupAvatarUrl.value = "";
-        closePopup(popupAvatar);
-      })
-      .catch((err) => console.log(`Ошибка: ${err}`))
-      .finally(() => {
-        renderLoading(popupAvatar, "Сохранить");
-      });
-  }
-}
+//       // .then(checkResponse)
+//       .then((res) => {
+//         profileAvatar.src = popupAvatarUrl.value;
+//         popupAvatarUrl.value = "";
+//         closePopup(popupAvatar);
+//       })
+//       .catch((err) => console.log(`Ошибка: ${err}`))
+//       .finally(() => {
+//         renderLoading(popupAvatar, "Сохранить");
+//       });
+//   }
+// }
 
 
 

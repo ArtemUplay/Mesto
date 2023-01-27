@@ -1,5 +1,6 @@
+
 export default class UserInfo {
-  constructor({ usernameSelector, userAboutSelector, userAvatarSelector}) {
+  constructor({ usernameSelector, userAboutSelector, userAvatarSelector }) {
     this._usernameSelector = usernameSelector;
     this._userAboutSelector = userAboutSelector;
     this._userAvatarSelector = userAvatarSelector;
@@ -10,9 +11,13 @@ export default class UserInfo {
   }
 
   setUserInfo(userdata, apiUserDataPoster) {
-    apiUserDataPoster(userdata);
-    document.querySelector(this._usernameSelector).textContent = userdata.name;
-    document.querySelector(this._userAboutSelector).textContent = userdata.about;
+    // console.log(apiUserDataPoster);
+    apiUserDataPoster(userdata)
+      .then((data) => {
+        document.querySelector(this._usernameSelector).textContent = userdata.name;
+        document.querySelector(this._userAboutSelector).textContent = userdata.about;
+        // console.log(data)
+      })
   }
 
   setUserAvatar(userdata, apiUserAvatarPoster) {
@@ -20,6 +25,4 @@ export default class UserInfo {
     document.querySelector(this._userAvatarSelector).src = userdata.avatar;
     document.querySelector(this._userAvatarSelector).alt = `фотография ${userdata.name}`;
   }
-
-
 }

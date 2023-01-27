@@ -85,6 +85,16 @@ export default class Api {
       .then(this._checkResponse)
   }
 
+  patchAvatar({ avatar }) {
+    return fetch(`${this._baseUrl}users/me/avatar`, {
+      method: 'PATCH',
+      body: JSON.stringify({
+        avatar: avatar,
+      }),
+      headers: this._headers
+    })
+      .then(this._checkResponse)
+  }
 
 }
 
@@ -113,17 +123,17 @@ function checkResponse(res) {
 // })
 // }
 
-export const postCard = (cardName, cardUrl) => {
-  return fetch(`${config.baseUrl}cards`, {
-    method: 'POST',
-    body: JSON.stringify({
-      name: cardName,
-      link: cardUrl
-    }),
-    headers: config.headers
-  })
-    .then(checkResponse)
-}
+// export const postCard = (cardName, cardUrl) => {
+//   return fetch(`${config.baseUrl}cards`, {
+//     method: 'POST',
+//     body: JSON.stringify({
+//       name: cardName,
+//       link: cardUrl
+//     }),
+//     headers: config.headers
+//   })
+//     .then(checkResponse)
+// }
 
 
 
