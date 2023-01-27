@@ -1,10 +1,10 @@
 import Popup from "./Popup";
 
 export default class PopupWithForm extends Popup {
-  constructor(popupSelector, handleFormSubmit, defaultFieldsValues) {
+  constructor(popupSelector, handleFormSubmit, defaultFieldsValuesGetter) {
     super(popupSelector);
     this._handleFormSubmit = handleFormSubmit;
-    this._defaultFieldsValues = defaultFieldsValues;
+    this._defaultFieldsValuesGetter = defaultFieldsValuesGetter;
     this._formElement = document.querySelector(popupSelector).querySelector('.popup__input-container');
 
     console.log(this._defaultFieldsValues);
@@ -13,7 +13,10 @@ export default class PopupWithForm extends Popup {
   }
 
   open() {
-    this._setInputValues(this._defaultFieldsValues);
+    this._defaultFieldsValuesGetter()
+    .then((res) => {
+      this._setInputValues(res);
+    });
     super.open();
   }
 

@@ -217,19 +217,19 @@ Promise.all([api.getUserProfile(), api.getCards()])
 
     const testUserInfo = {name: 'Проверка', about: 'тест', avatar: 'https://photofocus.com/wp-content/uploads/2022/02/Photoshop-Banner.jpg', _id: '3f4c8efbb64df6b2f30db241', cohort: 'plus-cohort-18'}
 
-    async function getUserI() {
-      const testUserInfoFromApi = await api.getUserProfile();
-    }
+    // async function getUserI() {
+    //   const testUserInfoFromApi = await api.getUserProfile();
+    // }
 
-    getUserI()
-    .then(() => {
-      const popupEdit = new PopupWithForm('.popup_type_profile', async function() { return await userProfile.setUserInfo(popupEdit._getInputValues(), api.patchProfile.bind(api))}, testUserInfoFromApi);
-      popupEdit.setEventListeners();
-      buttonEdit.addEventListener('click', popupEdit.open.bind(popupEdit));
-      const popupEditValidation = new FormValidator(validationConfig, popupEdit._formElement);
-      popupEditValidation.enableValidation();
+    // getUserI()
+    // .then(() => {
+    //   const popupEdit = new PopupWithForm('.popup_type_profile', async function() { return await userProfile.setUserInfo(popupEdit._getInputValues(), api.patchProfile.bind(api))}, testUserInfoFromApi);
+    //   popupEdit.setEventListeners();
+    //   buttonEdit.addEventListener('click', popupEdit.open.bind(popupEdit));
+    //   const popupEditValidation = new FormValidator(validationConfig, popupEdit._formElement);
+    //   popupEditValidation.enableValidation();
 
-    })
+    // })
 
 
 
@@ -246,7 +246,9 @@ Promise.all([api.getUserProfile(), api.getCards()])
     }, testUserInfo);
 
 
-    // const popupEdit = new PopupWithForm('.popup_type_profile', async function() { return await userProfile.setUserInfo(popupEdit._getInputValues(), api.patchProfile.bind(api))}, testUserInfoFromApi);
+    const popupEdit = new PopupWithForm('.popup_type_profile', async function() { return await userProfile.setUserInfo(popupEdit._getInputValues(), api.patchProfile.bind(api))}, api.getUserProfile.bind(api));
+      popupEdit.setEventListeners();
+      buttonEdit.addEventListener('click', popupEdit.open.bind(popupEdit));
 
     buttonAddPlace.addEventListener('click', popupAddCard.open.bind(popupAddCard))
     popupAddCard.setEventListeners();
