@@ -6,7 +6,7 @@ const config = {
   }
 }
 
-export default class Api {
+ class Api {
   constructor({ data }) {
     this._baseUrl = data.baseUrl;
     this._headers = data.headers;
@@ -98,68 +98,4 @@ export default class Api {
 
 }
 
-const api = new Api({ data: config });
-
-function checkResponse(res) {
-  if (res.ok) {
-    return res.json();
-  }
-  return Promise.reject(res.status);
-}
-
-
-
-// export const getCards = () => {
-//   return fetch(`${config.baseUrl}cards`, {
-//     method: 'GET',
-//     headers: config.headers
-//   })
-//     .then(checkResponse)
-// .then((res) => {
-//   if (res.ok) {
-//     return res.json();
-//   }
-//    return Promise.reject(res.status);
-// })
-// }
-
-// export const postCard = (cardName, cardUrl) => {
-//   return fetch(`${config.baseUrl}cards`, {
-//     method: 'POST',
-//     body: JSON.stringify({
-//       name: cardName,
-//       link: cardUrl
-//     }),
-//     headers: config.headers
-//   })
-//     .then(checkResponse)
-// }
-
-
-
-
-
-
-
-
-export const patchAvatar = (avatarUrl) => {
-
-  return fetch(`${config.baseUrl}users/me/avatar`, {
-    method: 'PATCH',
-    body: JSON.stringify({
-      avatar: avatarUrl,
-    }),
-    headers: config.headers
-  })
-    .then(checkResponse)
-  // .then((res) => {
-  //   if (res.ok) {
-  //     return res.json();
-  //   }
-  //    return Promise.reject(res.status);
-  // })
-}
-
-export {
-  api
-}
+export const api = new Api({ data: config });
