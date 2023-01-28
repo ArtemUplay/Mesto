@@ -7,8 +7,7 @@ export default class PopupWithForm extends Popup {
     this.someFunction = async function () { return await {} };
     this._defaultFieldsValuesGetter = defaultFieldsValuesGetter || this.someFunction;
     this._formElement = document.querySelector(popupSelector).querySelector('.popup__input-container');
-
-    console.log(this._defaultFieldsValues);
+    this._buttonSubmitText = document.querySelector(this._popupSelector).querySelector('.popup__button').textContent;
 
     // this._validationClearer = validationClearer;
   }
@@ -82,7 +81,7 @@ export default class PopupWithForm extends Popup {
         })
         .catch((err) => console.log(`Ошибка: ${err}`))
         .finally(() => {
-          this._renderLoading('Сохранить');
+          this._renderLoading(this._buttonSubmitText);
         });
     })
     super.setEventListeners();
