@@ -56,6 +56,8 @@ const validationConfig = {
   inputErrorActiveClass: "popup__item-error_active",
 };
 
+const testUserInfo = { name: 'Проверка', about: 'тест', avatar: 'https://photofocus.com/wp-content/uploads/2022/02/Photoshop-Banner.jpg', _id: '3f4c8efbb64df6b2f30db241', cohort: 'plus-cohort-18' }
+
 const userProfile = new UserInfo(userProfileSelectors);
 
 
@@ -197,8 +199,7 @@ Promise.all([api.getUserProfile(), api.getCards()])
     // fillProfile(userData);
 
     userId = userData._id;
-    userProfile.setUserInfo(userData, async function() { await console.log });
-    userProfile.setUserAvatar(userData, console.log);
+    userProfile.renderInfoProfile(userData);
 
     // и тут отрисовка карточек
 
@@ -215,7 +216,7 @@ Promise.all([api.getUserProfile(), api.getCards()])
 
     cardList.renderItems();
 
-    const testUserInfo = {name: 'Проверка', about: 'тест', avatar: 'https://photofocus.com/wp-content/uploads/2022/02/Photoshop-Banner.jpg', _id: '3f4c8efbb64df6b2f30db241', cohort: 'plus-cohort-18'}
+    const testUserInfo = { name: 'Проверка', about: 'тест', avatar: 'https://photofocus.com/wp-content/uploads/2022/02/Photoshop-Banner.jpg', _id: '3f4c8efbb64df6b2f30db241', cohort: 'plus-cohort-18' }
 
     // async function getUserI() {
     //   const testUserInfoFromApi = await api.getUserProfile();
@@ -236,31 +237,32 @@ Promise.all([api.getUserProfile(), api.getCards()])
     // const testUserInfoFromApi = getUserI();
     // console.log(testUserInfoFromApi());
 
-    const popupAddCard = new PopupWithForm('.popup_type_card', () => {
-      api.postCard(popupAddCard._getInputValues())
+    const popupAddCard = new PopupWithForm('.popup_type_card', async function () {
+      return await api.postCard(popupAddCard._getInputValues())
         .then((element) => {
           cardList._renderedItems.unshift(element);
           cardList.renderItems();
         })
         .catch((err) => console.log(`Ошибка: ${err}`))
-    }, testUserInfo);
+    });
 
 
-    const popupEdit = new PopupWithForm('.popup_type_profile', async function() { return await userProfile.setUserInfo(popupEdit._getInputValues(), api.patchProfile.bind(api))}, api.getUserProfile.bind(api));
-      popupEdit.setEventListeners();
-      buttonEdit.addEventListener('click', popupEdit.open.bind(popupEdit));
+    const popupEdit = new PopupWithForm('.popup_type_profile', function () {
+      return userProfile.setUserInfo(popupEdit._getInputValues(), api.patchProfile.bind(api))
+    },
+      api.getUserProfile.bind(api));
+    popupEdit.setEventListeners();
+    buttonEdit.addEventListener('click', popupEdit.open.bind(popupEdit));
 
     buttonAddPlace.addEventListener('click', popupAddCard.open.bind(popupAddCard))
     popupAddCard.setEventListeners();
 
-
-
     const popupAddCardValidation = new FormValidator(validationConfig, popupAddCard._formElement);
     popupAddCardValidation.enableValidation();
 
-    const popupAvatar = new PopupWithForm('.popup_type_avatar', () => {
+    const popupAvatar = new PopupWithForm('.popup_type_avatar', async function () {
       const avatar = popupAvatar._getInputValues();
-      userProfile.setUserAvatar(avatar, api.patchAvatar.bind(api));
+      return await userProfile.setUserAvatar(avatar, api.patchAvatar.bind(api))
 
       // if (!buttonSaveAvatar.disabled) {
       // renderLoading(popupAvatar, "Сохранение...");
@@ -274,7 +276,7 @@ Promise.all([api.getUserProfile(), api.getCards()])
       // renderLoading(popupAvatar, "Сохранить");
       //   });
       // }
-    }, testUserInfo)
+    })
 
     buttonEdit.addEventListener('click', popupEdit.open.bind(popupEdit));
     popupEdit.setEventListeners();

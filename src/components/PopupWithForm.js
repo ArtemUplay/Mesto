@@ -4,7 +4,8 @@ export default class PopupWithForm extends Popup {
   constructor(popupSelector, handleFormSubmit, defaultFieldsValuesGetter) {
     super(popupSelector);
     this._handleFormSubmit = handleFormSubmit;
-    this._defaultFieldsValuesGetter = defaultFieldsValuesGetter;
+    this.someFunction = async function () { return await {} };
+    this._defaultFieldsValuesGetter = defaultFieldsValuesGetter || this.someFunction;
     this._formElement = document.querySelector(popupSelector).querySelector('.popup__input-container');
 
     console.log(this._defaultFieldsValues);
@@ -14,9 +15,9 @@ export default class PopupWithForm extends Popup {
 
   open() {
     this._defaultFieldsValuesGetter()
-    .then((res) => {
-      this._setInputValues(res);
-    });
+      .then((res) => {
+        this._setInputValues(res);
+      });
     super.open();
   }
 
@@ -81,8 +82,8 @@ export default class PopupWithForm extends Popup {
         })
         .catch((err) => console.log(`Ошибка: ${err}`))
         .finally(() => {
-        this._renderLoading('Сохранить');
-          });
+          this._renderLoading('Сохранить');
+        });
     })
     super.setEventListeners();
   }

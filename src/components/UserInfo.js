@@ -10,17 +10,26 @@ export default class UserInfo {
     return userdata;
   }
 
+  renderInfoProfile(userdata) {
+    document.querySelector(this._usernameSelector).textContent = userdata.name;
+    document.querySelector(this._userAboutSelector).textContent = userdata.about;
+    document.querySelector(this._userAvatarSelector).src = userdata.avatar;
+    document.querySelector(this._userAvatarSelector).alt = `фотография ${userdata.name}`;
+  }
+
   setUserInfo(userdata, apiUserDataPoster) {
-    apiUserDataPoster(userdata)
-      .then((res) => {
+    return apiUserDataPoster(userdata)
+      .then((userdata) => {
         document.querySelector(this._usernameSelector).textContent = userdata.name;
         document.querySelector(this._userAboutSelector).textContent = userdata.about;
       })
   }
 
   setUserAvatar(userdata, apiUserAvatarPoster) {
-    apiUserAvatarPoster(userdata);
-    document.querySelector(this._userAvatarSelector).src = userdata.avatar;
-    document.querySelector(this._userAvatarSelector).alt = `фотография ${userdata.name}`;
+    return apiUserAvatarPoster(userdata)
+      .then((userdata) => {
+        document.querySelector(this._userAvatarSelector).src = userdata.avatar;
+        document.querySelector(this._userAvatarSelector).alt = `фотография ${userdata.name}`;
+      })
   }
 }
