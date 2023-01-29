@@ -53,23 +53,18 @@ export default class Card {
       this._toggleLike();
     })
 
-
-
     this.photoPlace = this._element.querySelector('.element__photo');
     this.photoPlace.addEventListener('click', () => {
       this._popupOpener(this._placeName, this._image);
     })
 
     this._element.querySelector('.element__delete-button').addEventListener('click', () => this._deleteCard());
-
-
   }
 
   _toggleLike() {
     if (this.buttonLike.classList.contains('element__like_active')) {
       this._disliker(this._cardId)
         .then(data => {
-          console.log(data);
           this._element.querySelector('.element__likes-counter').textContent = data.likes.length;
           this.buttonLike.classList.remove('element__like_active');
         })
@@ -79,7 +74,6 @@ export default class Card {
     } else {
       this._liker(this._cardId)
         .then(data => {
-          console.log(data);
           this._element.querySelector('.element__likes-counter').textContent = data.likes.length;
           this.buttonLike.classList.add('element__like_active');
         })
@@ -97,5 +91,4 @@ export default class Card {
       })
       .catch((err) => console.log(`Ошибка: ${err}`))
   }
-
 }

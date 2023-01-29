@@ -13,7 +13,7 @@ const buttonAddPlace = document.querySelector('.profile__add-button');
 const buttonAvatarEdit = document.querySelector('.profile__avatar-container');
 
 
-let userId = 1;
+// let userId = 1;
 
 const userProfileSelectors = {
   usernameSelector: '.profile__username',
@@ -50,7 +50,7 @@ Promise.all([api.getUserProfile(), api.getCards()])
     // тут установка данных пользователя
     // fillProfile(userData);
 
-    userId = userData._id;
+    const userId = userData._id;
     userProfile.renderInfoProfile(userData);
 
     // и тут отрисовка карточек
@@ -71,20 +71,21 @@ Promise.all([api.getUserProfile(), api.getCards()])
 
 
 
-
     //popupEdit
-    const popupEdit = new PopupWithForm('.popup_type_profile', function () {
-      return userProfile.setUserInfo(popupEdit._getInputValues(), api.patchProfile.bind(api))
-    },
-      api.getUserProfile.bind(api));
+    const popupEditValidation = new FormValidator(validationConfig, document.forms.userprofileform);
+    popupEditValidation.enableValidation();
+
+    const popupEdit = new PopupWithForm('.popup_type_profile', function () { return userProfile.setUserInfo(popupEdit._getInputValues(), api.patchProfile.bind(api)) }, popupEditValidation.cleanValidationErrors.bind(popupEditValidation), api.getUserProfile.bind(api));
     popupEdit.setEventListeners();
     buttonEdit.addEventListener('click', popupEdit.open.bind(popupEdit));
 
-    const popupEditValidation = new FormValidator(validationConfig, popupEdit._formElement);
-    popupEditValidation.enableValidation();
 
 
-  //popupAddCard
+    //popupAddCard
+
+    const popupAddCardValidation = new FormValidator(validationConfig, document.forms.cardCreateForm);
+    popupAddCardValidation.enableValidation();
+
     const popupAddCard = new PopupWithForm('.popup_type_card', async function () {
       return await api.postCard(popupAddCard._getInputValues())
         .then((element) => {
@@ -92,23 +93,21 @@ Promise.all([api.getUserProfile(), api.getCards()])
           cardList.renderItems();
         })
         .catch((err) => console.log(`Ошибка: ${err}`))
-    });
+    }, popupAddCardValidation.cleanValidationErrors.bind(popupAddCardValidation));
     popupAddCard.setEventListeners();
     buttonAddPlace.addEventListener('click', popupAddCard.open.bind(popupAddCard))
 
-    const popupAddCardValidation = new FormValidator(validationConfig, popupAddCard._formElement);
-    popupAddCardValidation.enableValidation();
 
     //popupAvatar
+    const popupAvatarValidation = new FormValidator(validationConfig, document.forms.useravatarform);
+    popupAvatarValidation.enableValidation();
+
     const popupAvatar = new PopupWithForm('.popup_type_avatar', async function () {
       const avatar = popupAvatar._getInputValues();
       return await userProfile.setUserAvatar(avatar, api.patchAvatar.bind(api))
-    })
+    }, popupAvatarValidation.cleanValidationErrors.bind(popupAvatarValidation))
     popupAvatar.setEventListeners();
     buttonAvatarEdit.addEventListener('click', popupAvatar.open.bind(popupAvatar));
-
-    const popupAvatarValidation = new FormValidator(validationConfig, popupAvatar._formElement);
-    popupAvatarValidation.enableValidation();
 
   })
   .catch(err => {

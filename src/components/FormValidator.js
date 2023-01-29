@@ -9,7 +9,6 @@ export default class FormValidator {
   }
 
   _showInputError(inputElement, errorMessage) {
-    console.log(inputElement);
     const errorElement = this._formElement.querySelector(`.${inputElement.id}-error`);
     inputElement.classList.add(this._inputErrorClass);
     errorElement.textContent = errorMessage;
@@ -53,7 +52,7 @@ export default class FormValidator {
   cleanValidationErrors() {
     const inputList = Array.from(this._formElement.querySelectorAll(this._inputSelector));
     inputList.forEach((inputElement) => {
-      this._hideInputError(this._formElement, inputElement);
+      this._hideInputError(inputElement);
     })
   }
 
