@@ -1,33 +1,27 @@
-import '../pages/index.css';
+import './index.css';
 
-import { api } from './api.js';
-import Card from './Card.js';
-import Section from './Section.js';
-import PopupWithImage from './PopupWithImage.js';
-import PopupWithForm from './PopupWithForm.js';
-import UserInfo from './UserInfo.js';
-import FormValidator from './FormValidator.js';
+import { api } from '../components/api.js';
+import Card from '../components/Card.js';
+import Section from '../components/Section.js';
+import PopupWithImage from '../components/PopupWithImage.js';
+import PopupWithForm from '../components/PopupWithForm.js';
+import UserInfo from '../components/UserInfo.js';
+import FormValidator from '../components/FormValidator.js';
 
-const buttonEdit = document.querySelector('.profile__edit-button');
-const buttonAddPlace = document.querySelector('.profile__add-button');
-const buttonAvatarEdit = document.querySelector('.profile__avatar-container');
-
-
-// let userId = 1;
-
-const userProfileSelectors = {
-  usernameSelector: '.profile__username',
-  userAboutSelector: '.profile__user-position',
-  userAvatarSelector: '.profile__avatar'
-}
-
-const validationConfig = {
-  formSelector: ".popup__input-container",
-  inputSelector: ".popup__item",
-  submitButtonSelector: ".popup__button",
-  inputErrorClass: "popup__item_type_error",
-  inputErrorActiveClass: "popup__item-error_active",
-};
+import {
+  popupProfileSelector,
+  popupAddCardSelector,
+  popupAvatarSelector,
+  cardContainerSelector,
+  buttonEdit,
+  buttonAddPlace,
+  buttonAvatarEdit,
+  userProfileForm,
+  cardCreateForm,
+  userAvatarForm,
+  userProfileSelectors,
+  validationConfig
+} from '../utils/constansts';
 
 const userProfile = new UserInfo(userProfileSelectors);
 
@@ -35,20 +29,11 @@ const userProfile = new UserInfo(userProfileSelectors);
 const popupImage = new PopupWithImage('.popup_type_img');
 popupImage.setEventListeners();
 
-
-
-
 Promise.all([api.getUserProfile(), api.getCards()])
-  // тут деструктурируете ответ от сервера, чтобы было понятнее, что пришло
-  // .then((results) => {
-  //   const userData = results[0];
-  //   const cards = results[1];
-  // })
   .then((results) => {
     const userData = results[0];
     const cards = results[1];
     // тут установка данных пользователя
-    // fillProfile(userData);
 
     const userId = userData._id;
     userProfile.renderInfoProfile(userData);
@@ -62,20 +47,17 @@ Promise.all([api.getUserProfile(), api.getCards()])
         const cardElement = newCard.generate();
         cardList.setItem(cardElement);
       }
-    }, '.elements');
+    }, cardContainerSelector);
 
     cardList.renderItems();
 
     //Создание попапов
 
-
-
-
     //popupEdit
-    const popupEditValidation = new FormValidator(validationConfig, document.forms.userprofileform);
+    const popupEditValidation = new FormValidator(validationConfig, userProfileForm);
     popupEditValidation.enableValidation();
 
-    const popupEdit = new PopupWithForm('.popup_type_profile', function () { return userProfile.setUserInfo(popupEdit._getInputValues(), api.patchProfile.bind(api)) }, popupEditValidation.cleanValidationErrors.bind(popupEditValidation), api.getUserProfile.bind(api));
+    const popupEdit = new PopupWithForm(popupProfileSelector, function () { return userProfile.setUserInfo(popupEdit._getInputValues(), api.patchProfile.bind(api)) }, popupEditValidation.cleanValidationErrors.bind(popupEditValidation), api.getUserProfile.bind(api));
     popupEdit.setEventListeners();
     buttonEdit.addEventListener('click', popupEdit.open.bind(popupEdit));
 
@@ -83,10 +65,10 @@ Promise.all([api.getUserProfile(), api.getCards()])
 
     //popupAddCard
 
-    const popupAddCardValidation = new FormValidator(validationConfig, document.forms.cardCreateForm);
+    const popupAddCardValidation = new FormValidator(validationConfig, cardCreateForm);
     popupAddCardValidation.enableValidation();
 
-    const popupAddCard = new PopupWithForm('.popup_type_card', async function () {
+    const popupAddCard = new PopupWithForm(popupAddCardSelector, async function () {
       return await api.postCard(popupAddCard._getInputValues())
         .then((element) => {
           cardList._renderedItems.unshift(element);
@@ -99,10 +81,10 @@ Promise.all([api.getUserProfile(), api.getCards()])
 
 
     //popupAvatar
-    const popupAvatarValidation = new FormValidator(validationConfig, document.forms.useravatarform);
+    const popupAvatarValidation = new FormValidator(validationConfig, userAvatarForm);
     popupAvatarValidation.enableValidation();
 
-    const popupAvatar = new PopupWithForm('.popup_type_avatar', async function () {
+    const popupAvatar = new PopupWithForm(popupAvatarSelector, async function () {
       const avatar = popupAvatar._getInputValues();
       return await userProfile.setUserAvatar(avatar, api.patchAvatar.bind(api))
     }, popupAvatarValidation.cleanValidationErrors.bind(popupAvatarValidation))

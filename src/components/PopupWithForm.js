@@ -38,7 +38,6 @@ export default class PopupWithForm extends Popup {
   _setInputValues(formData) {
     this._inputList = document.querySelector(this._popupSelector).querySelectorAll('.popup__item');
     this._inputList.forEach((input) => {
-      console.log(input.name);
       if (typeof formData[input.name] !== "undefined") {
         input.value = formData[input.name];
       }
