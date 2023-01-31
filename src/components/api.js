@@ -12,6 +12,11 @@ const config = {
     this._headers = data.headers;
   }
 
+  _request(url, options) {
+    return fetch(`${this._baseUrl}${url}`, options)
+    .then(this._checkResponse)
+  }
+
   _checkResponse(response) {
     if (response.ok) {
       return response.json();
@@ -21,31 +26,28 @@ const config = {
   }
 
   getCards() {
-    return fetch(`${this._baseUrl}cards`, {
+    return this._request(`cards`, {
       method: 'GET',
       headers: this._headers
     })
-      .then(this._checkResponse);
   }
 
   likeCard(cardId) {
-    return fetch(`${this._baseUrl}cards/likes/${cardId}`, {
-      method: 'PUT',
-      headers: this._headers
-    })
-      .then(this._checkResponse)
+   return this._request(`cards/likes/${cardId}`, {
+          method: 'PUT',
+          headers: this._headers
+        })
   }
 
   dislikeCard(cardId) {
-    return fetch(`${this._baseUrl}cards/likes/${cardId}`, {
+    return this._request(`cards/likes/${cardId}`, {
       method: 'DELETE',
       headers: this._headers
     })
-      .then(this._checkResponse)
-  }
+}
 
   postCard({ name, position }) {
-    return fetch(`${this._baseUrl}cards`, {
+    return this._request(`cards`, {
       method: 'POST',
       body: JSON.stringify({
         name: name,
@@ -53,28 +55,25 @@ const config = {
       }),
       headers: this._headers
     })
-      .then(this._checkResponse)
   }
 
   delCard(cardId) {
-    return fetch(`${this._baseUrl}cards/${cardId}`, {
+    return this._request(`cards/${cardId}`, {
       method: 'DELETE',
       headers: this._headers
-    })
-      .then(this._checkResponse)
-  }
+  })
+}
 
   getUserProfile() {
-    return fetch(`${this._baseUrl}users/me`, {
+    return this._request(`users/me`, {
       method: 'GET',
       headers: this._headers
     })
-      .then(this._checkResponse)
   }
 
   patchProfile({ name, about }) {
 
-    return fetch(`${this._baseUrl}users/me`, {
+    return this._request(`users/me`, {
       method: 'PATCH',
       body: JSON.stringify({
         name: name,
@@ -82,18 +81,16 @@ const config = {
       }),
       headers: this._headers
     })
-      .then(this._checkResponse)
   }
 
   patchAvatar({ avatar }) {
-    return fetch(`${this._baseUrl}users/me/avatar`, {
+    return this._request(`users/me/avatar`, {
       method: 'PATCH',
       body: JSON.stringify({
         avatar: avatar,
       }),
       headers: this._headers
     })
-      .then(this._checkResponse)
   }
 
 }
