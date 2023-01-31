@@ -1,6 +1,6 @@
 import './index.css';
 
-import { api } from '../components/api.js';
+import { api } from '../components/Api.js';
 import Card from '../components/Card.js';
 import Section from '../components/Section.js';
 import PopupWithImage from '../components/PopupWithImage.js';
@@ -35,7 +35,7 @@ Promise.all([api.getUserProfile(), api.getCards()])
     // тут установка данных пользователя
 
     const userId = userData._id;
-    userProfile.renderInfoProfile(userData);
+    userProfile.setUserInfo(userData);
 
     // и тут отрисовка карточек
 
@@ -56,7 +56,12 @@ Promise.all([api.getUserProfile(), api.getCards()])
     const popupEditValidation = new FormValidator(validationConfig, userProfileForm);
     popupEditValidation.enableValidation();
 
-    const popupEdit = new PopupWithForm(popupProfileSelector, function () { return userProfile.setUserInfo(popupEdit._getInputValues(), api.patchProfile.bind(api)) }, popupEditValidation.cleanValidationErrors.bind(popupEditValidation), api.getUserProfile.bind(api));
+    // const popupEdit = new PopupWithForm(popupProfileSelector, function () { return userProfile.setUserInfo(popupEdit._getInputValues(), api.patchProfile.bind(api)) }, popupEditValidation.cleanValidationErrors.bind(popupEditValidation), api.getUserProfile.bind(api));
+    const popupEdit = new PopupWithForm(popupProfileSelector, function () {
+      return (api.patchProfile(popupEdit.getInputValues())
+      .then ((userData) => userProfile.setUserInfo(userData)))
+    }, popupEditValidation.cleanValidationErrors.bind(popupEditValidation), api.getUserProfile.bind(api));
+
     buttonEdit.addEventListener('click', popupEdit.open.bind(popupEdit));
 
 
@@ -67,7 +72,7 @@ Promise.all([api.getUserProfile(), api.getCards()])
     popupAddCardValidation.enableValidation();
 
     const popupAddCard = new PopupWithForm(popupAddCardSelector, async function () {
-      return await api.postCard(popupAddCard._getInputValues())
+      return await api.postCard(popupAddCard.getInputValues())
         .then((element) => {
           const newCard = new Card(element, userId, (cardId) => { return api.likeCard(cardId) }, (cardId) => { return api.dislikeCard(cardId) }, (cardId) => api.delCard(cardId), '#element-template', popupImage.open.bind(popupImage));
           cardList.prependItem(newCard.generate())
@@ -82,8 +87,10 @@ Promise.all([api.getUserProfile(), api.getCards()])
     popupAvatarValidation.enableValidation();
 
     const popupAvatar = new PopupWithForm(popupAvatarSelector, async function () {
-      const avatar = popupAvatar._getInputValues();
-      return await userProfile.setUserAvatar(avatar, api.patchAvatar.bind(api))
+      // const avatar = popupAvatar._getInputValues();
+      return (api.patchAvatar(popupAvatar.getInputValues())
+      .then ((userData) => userProfile.setUserInfo(userData)))
+      // return await userProfile.setUserAvatar(avatar, api.patchAvatar.bind(api))
     }, popupAvatarValidation.cleanValidationErrors.bind(popupAvatarValidation));
     buttonAvatarEdit.addEventListener('click', popupAvatar.open.bind(popupAvatar));
 
