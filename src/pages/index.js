@@ -23,6 +23,14 @@ import {
   validationConfig
 } from '../utils/constansts';
 
+function createCard(element, userId) {
+  const cardElement = new Card(element, userId, (cardId) => {
+    return api.likeCard(cardId)
+  }, (cardId) => { return api.dislikeCard(cardId) }, (cardId) => api.delCard(cardId), '#element-template', popupImage.open.bind(popupImage));
+
+  return cardElement.generate();
+}
+
 const userProfile = new UserInfo(userProfileSelectors);
 
 //popupImage
@@ -42,9 +50,7 @@ Promise.all([api.getUserProfile(), api.getCards()])
     const cardList = new Section({
       data: cards,
       renderer: (element) => {
-        const newCard = new Card(element, userId, (cardId) => { return api.likeCard(cardId) }, (cardId) => { return api.dislikeCard(cardId) }, (cardId) => api.delCard(cardId), '#element-template', popupImage.open.bind(popupImage));
-        const cardElement = newCard.generate();
-        cardList.setItem(cardElement);
+        cardList.setItem(createCard(element, userId));
       }
     }, cardContainerSelector);
 
@@ -56,11 +62,10 @@ Promise.all([api.getUserProfile(), api.getCards()])
     const popupEditValidation = new FormValidator(validationConfig, userProfileForm);
     popupEditValidation.enableValidation();
 
-    // const popupEdit = new PopupWithForm(popupProfileSelector, function () { return userProfile.setUserInfo(popupEdit._getInputValues(), api.patchProfile.bind(api)) }, popupEditValidation.cleanValidationErrors.bind(popupEditValidation), api.getUserProfile.bind(api));
     const popupEdit = new PopupWithForm(popupProfileSelector, function () {
       return (api.patchProfile(popupEdit.getInputValues())
         .then((userData) => userProfile.setUserInfo(userData)))
-    }, popupEditValidation.cleanValidationErrors.bind(popupEditValidation), api.getUserProfile.bind(api));
+    }, popupEditValidation.cleanValidationErrors.bind(popupEditValidation), userProfile.getUserInfo.bind(userProfile));
 
     buttonEdit.addEventListener('click', popupEdit.open.bind(popupEdit));
 
@@ -74,8 +79,8 @@ Promise.all([api.getUserProfile(), api.getCards()])
     const popupAddCard = new PopupWithForm(popupAddCardSelector, async function () {
       return await api.postCard(popupAddCard.getInputValues())
         .then((element) => {
-          const newCard = new Card(element, userId, (cardId) => { return api.likeCard(cardId) }, (cardId) => { return api.dislikeCard(cardId) }, (cardId) => api.delCard(cardId), '#element-template', popupImage.open.bind(popupImage));
-          cardList.prependItem(newCard.generate())
+          // const newCard = new Card(element, userId, (cardId) => { return api.likeCard(cardId) }, (cardId) => { return api.dislikeCard(cardId) }, (cardId) => api.delCard(cardId), '#element-template', popupImage.open.bind(popupImage));
+          cardList.prependItem(createCard(element, userId));
         })
         .catch((err) => console.log(`Ошибка: ${err}`))
     }, popupAddCardValidation.cleanValidationErrors.bind(popupAddCardValidation));
@@ -99,5 +104,6 @@ Promise.all([api.getUserProfile(), api.getCards()])
     // тут ловим ошибку
     console.log(err);
   });
+
 
 

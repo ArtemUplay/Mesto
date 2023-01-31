@@ -15,10 +15,7 @@ export default class PopupWithForm extends Popup {
   }
 
   open() {
-    this._defaultFieldsValuesGetter()
-      .then((res) => {
-        this._setInputValues(res);
-      });
+    this._setInputValues(this._defaultFieldsValuesGetter());
     super.open();
   }
 
