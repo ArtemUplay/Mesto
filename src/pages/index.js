@@ -59,7 +59,7 @@ Promise.all([api.getUserProfile(), api.getCards()])
     // const popupEdit = new PopupWithForm(popupProfileSelector, function () { return userProfile.setUserInfo(popupEdit._getInputValues(), api.patchProfile.bind(api)) }, popupEditValidation.cleanValidationErrors.bind(popupEditValidation), api.getUserProfile.bind(api));
     const popupEdit = new PopupWithForm(popupProfileSelector, function () {
       return (api.patchProfile(popupEdit.getInputValues())
-      .then ((userData) => userProfile.setUserInfo(userData)))
+        .then((userData) => userProfile.setUserInfo(userData)))
     }, popupEditValidation.cleanValidationErrors.bind(popupEditValidation), api.getUserProfile.bind(api));
 
     buttonEdit.addEventListener('click', popupEdit.open.bind(popupEdit));
@@ -89,7 +89,7 @@ Promise.all([api.getUserProfile(), api.getCards()])
     const popupAvatar = new PopupWithForm(popupAvatarSelector, async function () {
       // const avatar = popupAvatar._getInputValues();
       return (api.patchAvatar(popupAvatar.getInputValues())
-      .then ((userData) => userProfile.setUserInfo(userData)))
+        .then((userData) => userProfile.setUserInfo(userData)))
       // return await userProfile.setUserAvatar(avatar, api.patchAvatar.bind(api))
     }, popupAvatarValidation.cleanValidationErrors.bind(popupAvatarValidation));
     buttonAvatarEdit.addEventListener('click', popupAvatar.open.bind(popupAvatar));
