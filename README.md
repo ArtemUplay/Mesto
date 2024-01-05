@@ -15,3 +15,7 @@
 - БЭМ
 
 Проект реализован совместно с makdmt ( https://github.com/makdmt )
+
+## Статус проекта
+
+> :heavy_check_mark: **Завершён**
